@@ -16,6 +16,11 @@
   .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:8px; }
   a { color:var(--accent); }
   .tags { color:var(--muted); font-size:.9em; }
+    .env { color:var(--muted); font-size:.9em; margin:0 0 8px; }
+  .card h4 { margin:16px 0 4px; }
+  .card ul { margin:4px 0; padding-left:1.2em; }
+  details { margin:12px 0; }
+  summary { cursor:pointer; color:var(--accent); }
 </style>
 </head>
 <body>
@@ -32,6 +37,35 @@
     <p>3 righe: cosa fa l'AI, come è costruita, cosa hai fatto tu.</p>
     <p class="tags">State Tree · AIPerception · Gameplay Tags · C++/Blueprint</p>
     <a href="https://github.com/tuousername/repo-gep">Codice e README</a>
+  </section>
+
+  <section class="card">
+    <h3>Arkanoid</h3>
+    <p class="env">C++ · DirectX 11 · Visual Studio</p>
+    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus, più palline e una modalità di illuminazione "light ball".</p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen></iframe></div>
+
+    <h4>Feature: AI</h4>
+    <ul>
+      <li>Predittore di traiettoria: simula la palla con rimbalzi su pareti e mattoncini e mostra dove atterrerà.</li>
+      <li>Palla più pericolosa: con più palline in gioco sceglie quale intercettare per prima.</li>
+      <li>Racchetta autonoma a priorità: prima la palla, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato.</li>
+    </ul>
+
+    <details>
+      <summary>Dettagli tecnici</summary>
+      <p><b>Pipeline:</b> percezione (<code>BallPredictor</code>) → decisione (<code>RacketAI</code>) → azione (movimento a velocità limitata con zona morta).</p>
+      <ul>
+        <li><b>Predizione:</b> simulazione a passo fisso nello spazio (non nel tempo), quindi la precisione non dipende dalla velocità; limite di passi e rimbalzi; punto di atterraggio ottenuto per interpolazione.</li>
+        <li><b>Priorità palla:</b> l'urgenza cresce con la vicinanza alla racchetta; sopra soglia la racchetta va al punto di atterraggio.</li>
+        <li><b>Priorità bonus:</b> solo bonus raggiungibili in tempo, ordinati per importanza/distanza, con controllo che prenderli non faccia perdere la palla.</li>
+        <li><b>Priorità mattoncini:</b> punteggio = peso del tipo × (0,5 + 0,3 altezza + 0,2 vicinanza).</li>
+        <li><b>Scelta di design:</b> priorità fisse invece di Utility AI completa: più semplici da debuggare, ma con passaggi bruschi tra un comportamento e l'altro.</li>
+        <li><b>Limiti noti:</b> la racchetta mira sempre al centro, quindi la posizione sotto il mattoncino non orienta la palla. Sviluppo previsto: calcolare l'offset di impatto per indirizzare il rimbalzo.</li>
+      </ul>
+    </details>
+
+    <a href="https://github.com/lorenzo2330/MasterCGD_Arkanoid">Codice e README su GitHub</a>
   </section>
 
   <!-- copia la section per Arkanoid e Bomberman -->
