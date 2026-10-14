@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portfolio Lorenzo D'Ambrosio"
 <title>Lorenzo D'Ambrosio</title>
 <style>
   :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f4f4f5; --accent:#2563eb; }
@@ -32,24 +33,44 @@
   <h2>Progetti</h2>
 
   <section class="card">
-    <h3>Boss AI con State Tree (Unreal)</h3>
-    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen></iframe></div>
-    <p>3 righe: cosa fa l'AI, come è costruita, cosa hai fatto tu.</p>
-    <p class="tags">State Tree · AIPerception · Gameplay Tags · C++/Blueprint</p>
-    <a href="https://github.com/tuousername/repo-gep">Codice e README</a>
+    <h3>Simple Platform (Boss AI con State Tree)</h3>
+    <p class="env">Unreal Engine 5.8 · State Tree · AIPerception · C++ / Blueprint</p>
+    <p>Platformer in Unreal (con monete, nemici base che pattugliano e un boss controllato da uno State Tree), sviluppato per il corso di Game Engine Programming del Master in Computer Game Development (Università di Verona)</p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen loading="lazy" title="Video: Simple Platform"></iframe></div>
+
+    <h4>Feature: AI</h4>
+    <ul>
+      <li>Percezione a vista (AIPerception): il controller traduce ciò che vede in eventi ad alto livello (gameplay tag), così lo State Tree decide solo su quelli</li>
+      <li>Memoria del bersaglio: se perde il giocatore ne ricorda l'ultima posizione per un tempo configurabile, poi va a controllare quel punto e torna a pattugliare, oppure attacca se lo rivede</li>
+      <li>Ciclo di combattimento: insegue, attacca e passa per una fase di vulnerabilità, con attese a durata variabile per evitare un comportamento meccanico</li>
+    </ul>
+
+    <details>
+      <summary>Dettagli tecnici</summary>
+      <p><b>Pipeline:</b> percezione (<code>AIC_Enemy</code>) → eventi (<code>AI.Event.Attacking</code>, <code>AI.Event.Lost</code>) → decisione (<code>ST_Enemy</code>) → azione (Move To, task di attacco e vulnerabilità)</p>
+      <ul>
+        <li><b>Gerarchia degli stati:</b> Idle (pattuglia o vaga), Investigate, Attacking (avvicinamento, attacco, vulnerabilità, attesa). Gli stati raggruppati evitano l'esplosione di transizioni: Idle e Investigate passano ad Attacking con un solo evento</li>
+        <li><b>Memoria:</b> quando il bersaglio esce dalla vista parte un timer (<code>MemoryDuration</code>) e viene salvata <code>LastKnownLocation</code>; il timer viene annullato se il giocatore ricompare, per evitare che i due eventi si contraddicano</li>
+        <li><b>Investigate:</b> navigazione verso l'ultima posizione nota, senza usare il bersaglio, quindi il boss non "sa" dove si è nascosto il giocatore</li>
+        <li><b>Perché State Tree:</b> transizioni esplicite guidate da eventi e integrazione semplice con la percezione tramite gameplay tag, adatte a un boss con fasi ben definite. Un Behavior Tree sarebbe più flessibile per comportamenti molto reattivi e componibili</li>
+        <li><b>Limiti noti:</b> percezione solo visiva, riferimento diretto alla classe del giocatore anziché team ID, un solo attacco con ciclo prevedibile. Sviluppi previsti: più attacchi scelti con Considerations (distanza, cooldown, ultimo attacco usato) e una seconda fase a bassa vita</li>
+      </ul>
+    </details>
+
+    <a href="https://github.com/lorenzo2330/MasterCGD_GEP_Platform">Codice e README su GitHub</a>
   </section>
 
   <section class="card">
-    <h3>Arkanoid</h3>
+    <h3>Arkanoid Clone</h3>
     <p class="env">C++ · DirectX 11 · Visual Studio</p>
-    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus (velocità, racchetta maggiore e moltiplicazione di palline) e una modalità di illuminazione "light ball".</p>
-    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen></iframe></div>
+    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus (velocità, racchetta maggiore e moltiplicazione di palline) e una modalità di illuminazione "light ball"</p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen loading="lazy" title="Video: Arkanoid Clone"></iframe></div>
 
     <h4>Feature: AI</h4>
     <ul>
       <li>Predittore di traiettoria: simula la traiettoria della pallina (rimbalzi su pareti e mattoncini) e mostra dove è destinata a colpire</li>
       <li>Palla più pericolosa: tra le palline in discesa sceglie quella che raggiungerà per prima l'altezza della racchetta e la tratta come prioritaria</li>
-      <li>Racchetta autonoma a priorità: si stabilisce una priorità (prima la pallina, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato) e si concentra sulla priorità maggiore</li>
+      <li>Racchetta autonoma a priorità: segue un ordine fisso (prima la pallina, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato) e agisce sul primo livello applicabile</li>
     </ul>
 
     <details>
@@ -60,17 +81,93 @@
         <li><b>Priorità palla:</b> l'urgenza cresce con la vicinanza alla racchetta, entro una certa soglia la racchetta si posiziona al punto di collisione previsto</li>
         <li><b>Priorità bonus:</b> solo bonus raggiungibili in tempo, ordinati per importanza/distanza, con controllo che prenderli non faccia perdere la palla</li>
         <li><b>Priorità mattoncini:</b> punteggio = peso del tipo * (0,5 + 0,3 * altezza + 0,2 * vicinanza): il tipo pesa di più, mentre altezza e vicinanza lo correggono</li>
-        <li><b>Limiti noti:</b> la racchetta mira sempre al centro, quindi la posizione sotto il mattoncino non orienta la palla. Sviluppo previsto: calcolare l'offset di impatto per indirizzare il rimbalzo.</li>
+        <li><b>Limiti noti:</b> la racchetta mira sempre al centro, quindi la posizione sotto il mattoncino non orienta la palla. Sviluppo previsto: calcolare l'offset di impatto per indirizzare il rimbalzo</li>
       </ul>
     </details>
 
     <a href="https://github.com/lorenzo2330/MasterCGD_Arkanoid">Codice e README su GitHub</a>
   </section>
 
-  <!-- copia la section per Arkanoid e Bomberman -->
 
-  <h2>Altri lavori</h2>
-  <p>Flipper (Unreal): AI che controlla le palette. FinalProj (Unreal): boss finale, level design e attacchi.</p>
+<section class="card">
+    <h3>Bomberman Clone (PaoPao)</h3>
+    <p class="env">Unity 6 · C# · Photon · FMOD</p>
+    <p>Clone di Bomberman per mobile con multiplayer online, sviluppato in team di tre per il corso di Mobile Programming del Master in Computer Game Development (Università di Verona)</p>
+    <p>Contributo personale focalizzato su: gameplay programming, audio e bot programming</p>
+	<div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen loading="lazy" title="Video: PaoPao"></iframe></div>
+
+    <h4>Feature: AI</h4>
+    <ul>
+      <li>Bot con più livelli di difficoltà: ogni livello è una strategia intercambiabile (pattern Strategy), scelta all'avvio della partita</li>
+      <li>Livello base: movimento casuale che tende a proseguire nella direzione corrente, con bomba piazzata appena possibile</li>
+      <li>Livello "piazza e scappa": dopo aver piazzato la bomba, il bot passa alla fase di fuga (evita la direzione della bomba e cambia strada se resta bloccato)</li>
+    </ul>
+
+    <details>
+      <summary>Dettagli tecnici</summary>
+      <p><b>Pipeline:</b> stato del bot (<code>BotContext</code>) → decisione (<code>IBotStrategy</code>: <code>DecideMovement</code>, <code>DecideBomb</code>) → azione (<code>BotInputHandler</code>, che entra nel gioco come un normale input tramite <code>IPlayerInput</code>)</p>
+      <ul>
+        <li><b>Stati:</b> due stati, <code>EXPLORING</code> e <code>ESCAPING</code>; un timer legato all'esplosione riporta il bot in esplorazione</li>
+        <li><b>Parametri per difficoltà:</b> cooldown del cambio direzione e della bomba in uno ScriptableObject (<code>BotInstanceData</code>), quindi regolabili senza toccare il codice</li>
+        <li><b>Perché Strategy:</b> aggiungere una difficoltà significa aggiungere una classe, senza modificare l'input handler</li>
+        <li><b>Limiti noti:</b> il bot non conosce la mappa né le celle pericolose, quindi la fuga è cieca e può finire in un vicolo cieco. Sviluppo previsto: mappa del pericolo con i timer delle esplosioni e ricerca BFS della cella sicura raggiungibile prima dello scoppio, come nuova strategia</li>
+      </ul>
+    </details>
+
+    <a href="https://github.com/Bosang6/PaoPao">Codice e README su GitHub</a>
+  </section>
+
+<section class="card">
+    <h3>Physics Flipper</h3>
+    <p class="env">Unreal Engine 5.7 · Blueprint</p>
+    <p>Flipper in Unreal basato interamente sulla fisica del motore, senza animazioni, sviluppato per i corsi di Physics Programming e Tools Programming del Master in Computer Game Development (Università di Verona)</p>
+    <div class="video"><iframe src="https://www.youtube.com/watch?v=MglWUY4nWWs" allowfullscreen loading="lazy" title="Video: Physics Flipper"></iframe></div>
+
+    <h4>Feature: AI</h4>
+    <ul>
+      <li>Modalità AI: il flipper gioca da solo applicando gli impulsi alle palette</li>
+      <li>Rilevamento tramite trigger zone: quando la pallina entra nella zona di una paletta, l'AI la aziona</li>
+    </ul>
+
+    <details>
+      <summary>Dettagli tecnici</summary>
+      <ul>
+        <li><b>Approccio:</b> AI puramente reattiva, basata sulla posizione della pallina, senza predizione della traiettoria</li>
+        <li><b>Limiti noti:</b> non sceglie quando ritardare il colpo né dove indirizzare la pallina. Sviluppo previsto: usare la velocità della pallina per decidere il momento dell'impulso</li>
+        <li><b>Tools Programming:</b> sviluppo con git-flow (branch per ball, paddle, AI, sound...) e plugin Git per Unreal</li>
+      </ul>
+    </details>
+
+    <a href="https://github.com/lorenzo2330/PhysicsFlipper">Codice e README su GitHub</a>
+  </section>
+
+
+  <section class="card">
+    <h3>BuildFailed</h3>
+    <p class="env">Unreal Engine 5.8 · C++ / Blueprint</p>
+    <p>Multiplayer Coop diviso in stanze, progetto finale del Master in Computer Game Development (Università di Verona)</p>
+	<p>Contributo personale focalizzato su: level design (arena, game loop e tipologie di attacchi) e implementazione del livello finale (MergeRoom)</p>
+    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen loading="lazy" title="Video: BuildFailed"></iframe></div>
+
+    <h4>Feature: AI</h4>
+    <ul>
+      <li>Boss diviso in 3 fasi, ognuna con un proprio pool di attacchi</li>
+      <li>Ad ogni fase il boss lancia un attacco scelto a caso dal pool della fase</li>
+    </ul>
+
+    <details>
+      <summary>Dettagli tecnici</summary>
+      <ul>
+        <li><b>Componenti che ho sviluppato:</b> framework del livello, griglia dell'arena, <code>AttackManager</code>, <code>TileManager</code>, <code>SprintManager</code> e <code>GameManager</code></li>
+		<li><b>Limiti noti:</b> le fasi sono scritte nel codice (hardcoded), la scelta è casuale e non tiene conto del giocatore, quindi il comportamento è poco adattivo</li>
+        <li><b>Sviluppi previsti:</b> sostituire la scelta casuale con un decisore (scelta pesata con Considerations come distanza, cooldown e ultimo attacco usato, oppure State Tree con le fasi come stati)</li>
+      </ul>
+    </details>
+
+    <a href="https://github.com/lorenzo2330/REPO_BUILDFAILED">Codice e README su GitHub</a>
+  </section>
+
+	
 </main>
 </body>
 </html>
