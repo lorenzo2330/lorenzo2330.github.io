@@ -42,25 +42,24 @@
   <section class="card">
     <h3>Arkanoid</h3>
     <p class="env">C++ · DirectX 11 · Visual Studio</p>
-    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus, più palline e una modalità di illuminazione "light ball".</p>
+    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus (velocità, racchetta maggiore e moltiplicazione di palline) e una modalità di illuminazione "light ball".</p>
     <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen></iframe></div>
 
     <h4>Feature: AI</h4>
     <ul>
-      <li>Predittore di traiettoria: simula la palla con rimbalzi su pareti e mattoncini e mostra dove atterrerà.</li>
-      <li>Palla più pericolosa: con più palline in gioco sceglie quale intercettare per prima.</li>
-      <li>Racchetta autonoma a priorità: prima la palla, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato.</li>
+      <li>Predittore di traiettoria: simula la traiettoria della pallina (rimbalzi su pareti e mattoncini) e mostra dove è destinata a colpire</li>
+      <li>Palla più pericolosa: tra le palline in discesa sceglie quella che raggiungerà per prima l'altezza della racchetta e la tratta come prioritaria</li>
+      <li>Racchetta autonoma a priorità: si stabilisce una priorità (prima la pallina, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato) e si concentra sulla priorità maggiore</li>
     </ul>
 
     <details>
       <summary>Dettagli tecnici</summary>
       <p><b>Pipeline:</b> percezione (<code>BallPredictor</code>) → decisione (<code>RacketAI</code>) → azione (movimento a velocità limitata con zona morta).</p>
       <ul>
-        <li><b>Predizione:</b> simulazione a passo fisso nello spazio (non nel tempo), quindi la precisione non dipende dalla velocità; limite di passi e rimbalzi; punto di atterraggio ottenuto per interpolazione.</li>
-        <li><b>Priorità palla:</b> l'urgenza cresce con la vicinanza alla racchetta; sopra soglia la racchetta va al punto di atterraggio.</li>
-        <li><b>Priorità bonus:</b> solo bonus raggiungibili in tempo, ordinati per importanza/distanza, con controllo che prenderli non faccia perdere la palla.</li>
-        <li><b>Priorità mattoncini:</b> punteggio = peso del tipo × (0,5 + 0,3 altezza + 0,2 vicinanza).</li>
-        <li><b>Scelta di design:</b> priorità fisse invece di Utility AI completa: più semplici da debuggare, ma con passaggi bruschi tra un comportamento e l'altro.</li>
+        <li><b>Predizione:</b> simulazione a passo fisso nello spazio; limite di passi e rimbalzi; punto di atterraggio ottenuto per interpolazione</li>
+        <li><b>Priorità palla:</b> l'urgenza cresce con la vicinanza alla racchetta, entro una certa soglia la racchetta si posiziona al punto di collisione previsto</li>
+        <li><b>Priorità bonus:</b> solo bonus raggiungibili in tempo, ordinati per importanza/distanza, con controllo che prenderli non faccia perdere la palla</li>
+        <li><b>Priorità mattoncini:</b> punteggio = peso del tipo * (0,5 + 0,3 * altezza + 0,2 * vicinanza): il tipo pesa di più, mentre altezza e vicinanza lo correggono</li>
         <li><b>Limiti noti:</b> la racchetta mira sempre al centro, quindi la posizione sotto il mattoncino non orienta la palla. Sviluppo previsto: calcolare l'offset di impatto per indirizzare il rimbalzo.</li>
       </ul>
     </details>
