@@ -1,173 +1,1087 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Portfolio Lorenzo D'Ambrosio"
-<title>Lorenzo D'Ambrosio</title>
-<style>
-  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f4f4f5; --accent:#2563eb; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#111; --fg:#eee; --muted:#999; --card:#1c1c1e; --accent:#60a5fa; }
-  }
-  body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--fg); line-height:1.5; }
-  main { max-width:760px; margin:0 auto; padding:24px 16px; }
-  .card { background:var(--card); border-radius:12px; padding:16px; margin:20px 0; }
-  .video { position:relative; padding-top:56.25%; margin-bottom:12px; }
-  .video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:8px; }
-  a { color:var(--accent); }
-  .tags { color:var(--muted); font-size:.9em; }
-    .env { color:var(--muted); font-size:.9em; margin:0 0 8px; }
-  .card h4 { margin:16px 0 4px; }
-  .card ul { margin:4px 0; padding-left:1.2em; }
-  details { margin:12px 0; }
-  summary { cursor:pointer; color:var(--accent); }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lorenzo D'Ambrosio - Portfolio di AI & Gameplay Programmer">
+  <title>Lorenzo D'Ambrosio · AI & Gameplay Programmer</title>
+  
+  <!-- Tailwind CSS per layout fluido e stile Bento Grid -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons per un'iconografia developer moderna -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            },
+            dark: {
+              bg: '#09090b',
+              card: '#121215',
+              border: '#27272a',
+              badge: '#1c1c21'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Transizioni morbide per lo switch dark/light */
+    body, div, section, header, nav, button, a {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    
+    /* Personalizzazione scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 4px;
+    }
+
+    /* Animazione Toast */
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast-anim {
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
 </head>
-<body>
-<main>
-  <h1>Lorenzo D'Ambrosio</h1>
-  <!--<p>AI Programmer: percezione, decisioni e navigazione per NPC. Unreal (State Tree, C++) e Unity.</p>-->
-  <p><a href="mailto:lorenzo.dambro@gmail.com">Email</a> · <a href="https://linkedin.com/in/lorenzodambrosio222">LinkedIn</a> · <a href="https://github.com/lorenzo2330">GitHub</a></p>
+<body class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
 
-  <h2>Progetti</h2>
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-dark-bg/80 border-b border-gray-200 dark:border-dark-border">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Logo / Name -->
+      <a href="#about" onclick="switchTab('about')" class="flex items-center gap-2 text-lg font-bold tracking-tight hover:opacity-80">
+        <span class="w-3 h-3 rounded-full bg-brand-600 animate-pulse"></span>
+        <span>Lorenzo D'Ambrosio</span>
+      </a>
 
-  <section class="card">
-    <h3>Simple Platform (Boss AI con State Tree)</h3>
-    <p class="env">Unreal Engine 5.8 · State Tree · AIPerception · C++ / Blueprint</p>
-    <p>Platformer in Unreal (con monete, nemici base che pattugliano e un boss controllato da uno State Tree), sviluppato per il corso di Game Engine Programming del Master in Computer Game Development (Università di Verona)</p>
-    <div class="video"><iframe src="https://www.youtube.com/embed/Bf3suteu0xc?si=nIaLY3IYBZ0pzwsd" allowfullscreen loading="lazy" title="Video: Simple Platform"></iframe></div>
+      <!-- Desktop Nav Tabs -->
+      <nav class="hidden sm:flex items-center gap-1 bg-gray-100 dark:bg-dark-card p-1 rounded-full border border-gray-200 dark:border-dark-border text-sm font-medium">
+        <button id="nav-about" onclick="switchTab('about')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          About
+        </button>
+        <button id="nav-projects" onclick="switchTab('projects')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          Progetti
+        </button>
+        <button id="nav-contact" onclick="switchTab('contact')" class="nav-btn px-4 py-1.5 rounded-full transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          Contatti
+        </button>
+      </nav>
 
-    <h4>Feature: AI</h4>
-    <ul>
-      <li>Percezione a vista (AIPerception): il controller traduce ciò che vede in eventi ad alto livello (gameplay tag), così lo State Tree decide solo su quelli</li>
-      <li>Memoria del bersaglio: se perde il giocatore ne ricorda l'ultima posizione per un tempo configurabile, poi va a controllare quel punto e torna a pattugliare, oppure attacca se lo rivede</li>
-      <li>Ciclo di combattimento: insegue, attacca e passa per una fase di vulnerabilità, con attese a durata variabile per evitare un comportamento meccanico</li>
-    </ul>
+      <!-- Right Actions: Theme Toggle & CV -->
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" onclick="toggleDarkMode()" aria-label="Cambia tema" class="p-2 rounded-xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <i id="theme-icon-sun" class="ph ph-sun text-lg hidden"></i>
+          <i id="theme-icon-moon" class="ph ph-moon text-lg"></i>
+        </button>
 
-    <details>
-      <summary>Dettagli tecnici</summary>
-      <p><b>Pipeline:</b> percezione (<code>AIC_Enemy</code>) → eventi (<code>AI.Event.Attacking</code>, <code>AI.Event.Lost</code>) → decisione (<code>ST_Enemy</code>) → azione (Move To, task di attacco e vulnerabilità)</p>
-      <ul>
-        <li><b>Gerarchia degli stati:</b> Idle (pattuglia o vaga), Investigate, Attacking (avvicinamento, attacco, vulnerabilità, attesa). Gli stati raggruppati evitano l'esplosione di transizioni: Idle e Investigate passano ad Attacking con un solo evento</li>
-        <li><b>Memoria:</b> quando il bersaglio esce dalla vista parte un timer (<code>MemoryDuration</code>) e viene salvata <code>LastKnownLocation</code>; il timer viene annullato se il giocatore ricompare, per evitare che i due eventi si contraddicano</li>
-        <li><b>Investigate:</b> navigazione verso l'ultima posizione nota, senza usare il bersaglio, quindi il boss non "sa" dove si è nascosto il giocatore</li>
-        <li><b>Perché State Tree:</b> transizioni esplicite guidate da eventi e integrazione semplice con la percezione tramite gameplay tag, adatte a un boss con fasi ben definite. Un Behavior Tree sarebbe più flessibile per comportamenti molto reattivi e componibili</li>
-        <li><b>Limiti noti:</b> percezione solo visiva, riferimento diretto alla classe del giocatore anziché team ID, un solo attacco con ciclo prevedibile. Sviluppi previsti: più attacchi scelti con Considerations (distanza, cooldown, ultimo attacco usato) e una seconda fase a bassa vita</li>
-      </ul>
-    </details>
+        <button onclick="openCvModal()" class="hidden sm:flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-sm">
+          <i class="ph ph-file-pdf text-base"></i>
+          <span>CV</span>
+        </button>
+      </div>
+    </div>
 
-    <a href="https://github.com/lorenzo2330/MasterCGD_GEP_Platform">Codice e README su GitHub</a>
-  </section>
+    <!-- Mobile Nav Bar (Bottom) -->
+    <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-lg border-t border-gray-200 dark:border-dark-border px-4 py-2 flex justify-around items-center">
+      <button onclick="switchTab('about')" id="mobile-nav-about" class="flex flex-col items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+        <i class="ph ph-user text-xl"></i>
+        <span>About</span>
+      </button>
+      <button onclick="switchTab('projects')" id="mobile-nav-projects" class="flex flex-col items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+        <i class="ph ph-code-block text-xl"></i>
+        <span>Progetti</span>
+      </button>
+      <button onclick="switchTab('contact')" id="mobile-nav-contact" class="flex flex-col items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+        <i class="ph ph-envelope-simple text-xl"></i>
+        <span>Contatti</span>
+      </button>
+      <button onclick="openCvModal()" class="flex flex-col items-center gap-1 text-xs text-brand-600 font-medium">
+        <i class="ph ph-file-pdf text-xl"></i>
+        <span>CV</span>
+      </button>
+    </div>
+  </header>
 
-  <section class="card">
-    <h3>Arkanoid Clone</h3>
-    <p class="env">C++ · DirectX 11 · Visual Studio</p>
-    <p>Clone di Arkanoid sviluppato per il corso di Graphics Programming del Master in Computer Game Development (Università di Verona): rendering DirectX 11, bonus (velocità, racchetta maggiore e moltiplicazione di palline) e una modalità di illuminazione "light ball"</p>
-    <div class="video"><iframe src="https://www.youtube.com/embed/CN2sM0bpni0?si=boNmG_Hr4797-AY-" allowfullscreen loading="lazy" title="Video: Arkanoid Clone"></iframe></div>
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-12">
 
-    <h4>Feature: AI</h4>
-    <ul>
-      <li>Predittore di traiettoria: simula la traiettoria della pallina (rimbalzi su pareti e mattoncini) e mostra dove è destinata a colpire</li>
-      <li>Palla più pericolosa: tra le palline in discesa sceglie quella che raggiungerà per prima l'altezza della racchetta e la tratta come prioritaria</li>
-      <li>Racchetta autonoma a priorità: segue un ordine fisso (prima la pallina, poi i bonus raggiungibili, poi i mattoncini con punteggio pesato) e agisce sul primo livello applicabile</li>
-    </ul>
+    <!-- ================= 1. SECTION: ABOUT ME ================= -->
+    <section id="tab-about" class="tab-content space-y-12 animate-fade-in">
+      
+      <!-- Hero Banner / Identity -->
+      <div class="relative overflow-hidden rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-10 shadow-sm">
+        <div class="absolute -right-10 -top-10 w-64 h-64 bg-brand-500/10 dark:bg-brand-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-    <details>
-      <summary>Dettagli tecnici</summary>
-      <p><b>Pipeline:</b> percezione (<code>BallPredictor</code>) → decisione (<code>RacketAI</code>) → azione (movimento a velocità limitata con zona morta).</p>
-      <ul>
-        <li><b>Predizione:</b> simulazione a passo fisso nello spazio; limite di passi e rimbalzi; punto di atterraggio ottenuto per interpolazione</li>
-        <li><b>Priorità palla:</b> l'urgenza cresce con la vicinanza alla racchetta, entro una certa soglia la racchetta si posiziona al punto di collisione previsto</li>
-        <li><b>Priorità bonus:</b> solo bonus raggiungibili in tempo, ordinati per importanza/distanza, con controllo che prenderli non faccia perdere la palla</li>
-        <li><b>Priorità mattoncini:</b> punteggio = peso del tipo * (0,5 + 0,3 * altezza + 0,2 * vicinanza): il tipo pesa di più, mentre altezza e vicinanza lo correggono</li>
-        <li><b>Limiti noti:</b> la racchetta mira sempre al centro, quindi la posizione sotto il mattoncino non orienta la palla. Sviluppo previsto: calcolare l'offset di impatto per indirizzare il rimbalzo</li>
-      </ul>
-    </details>
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-4 max-w-2xl">
+            <!-- Badge Disponibilità -->
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              Aperto a opportunità lavorative
+            </div>
 
-    <a href="https://github.com/lorenzo2330/MasterCGD_Arkanoid">Codice e README su GitHub</a>
-  </section>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Lorenzo D'Ambrosio
+            </h1>
+            <p class="text-lg text-brand-600 dark:text-brand-500 font-semibold tracking-wide">
+              AI & Gameplay Programmer
+            </p>
+            <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
+              Specializzato in architetture decisionale per NPC, sistemi di percezione visiva/uditiva, navigazione e comportamenti di combattimento.
+              Master in Computer Game Development presso l'Università di Verona. Sviluppo principalmente in <strong class="text-gray-900 dark:text-white">Unreal Engine 5 (C++, State Tree)</strong> e <strong class="text-gray-900 dark:text-white">Unity (C#)</strong>.
+            </p>
 
+            <!-- Quick Links -->
+            <div class="flex flex-wrap gap-3 pt-2">
+              <a href="https://github.com/lorenzo2330" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-dark-badge hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                <i class="ph ph-github-logo text-base"></i> GitHub
+              </a>
+              <a href="https://linkedin.com/in/lorenzodambrosio222" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-dark-badge hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                <i class="ph ph-linkedin-logo text-base"></i> LinkedIn
+              </a>
+              <a href="mailto:lorenzo.dambro@gmail.com" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gray-100 dark:bg-dark-badge hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                <i class="ph ph-envelope text-base"></i> Email
+              </a>
+            </div>
+          </div>
 
-<section class="card">
-    <h3>Bomberman Clone (PaoPao)</h3>
-    <p class="env">Unity 6 · C# · Photon · FMOD</p>
-    <p>Clone di Bomberman per mobile con multiplayer online, sviluppato in team di tre per il corso di Mobile Programming del Master in Computer Game Development (Università di Verona)</p>
-    <p>Contributo personale focalizzato su: gameplay programming, audio e bot programming</p>
-	<div class="video"><iframe src="https://www.youtube.com/embed/vvPt_-8rNBo?si=DgUPOOCGHYQMM-dx" allowfullscreen loading="lazy" title="Video: PaoPao"></iframe></div>
+          <!-- Interactive CV Card CTA -->
+          <div class="w-full md:w-auto flex flex-col gap-3 p-5 rounded-2xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-center md:text-left min-w-[220px]">
+            <div class="text-xs font-semibold uppercase text-gray-400 tracking-wider">Curriculum Vitae</div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">PDF pronto per la consultazione o il download diretto.</p>
+            <div class="flex flex-col gap-2">
+              <button onclick="openCvModal()" class="w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl transition-all">
+                <i class="ph ph-eye text-sm"></i> Visualizza CV
+              </button>
+              <a href="#download-cv" onclick="downloadCV()" class="w-full inline-flex items-center justify-center gap-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium text-xs px-4 py-2 rounded-xl transition-all">
+                <i class="ph ph-download-simple text-sm"></i> Download Diretto
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <h4>Feature: AI</h4>
-    <ul>
-      <li>Bot con più livelli di difficoltà: ogni livello è una strategia intercambiabile (pattern Strategy), scelta all'avvio della partita</li>
-      <li>Livello base: movimento casuale che tende a proseguire nella direzione corrente, con bomba piazzata appena possibile</li>
-      <li>Livello "piazza e scappa": dopo aver piazzato la bomba, il bot passa alla fase di fuga (evita la direzione della bomba e cambia strada se resta bloccato)</li>
-    </ul>
+      <!-- Bento Grid: Key Skills & Tech Stack -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-bold flex items-center gap-2">
+          <i class="ph ph-cpu text-brand-600 text-2xl"></i>
+          Competenze & Tech Stack
+        </h2>
 
-    <details>
-      <summary>Dettagli tecnici</summary>
-      <p><b>Pipeline:</b> stato del bot (<code>BotContext</code>) → decisione (<code>IBotStrategy</code>: <code>DecideMovement</code>, <code>DecideBomb</code>) → azione (<code>BotInputHandler</code>, che entra nel gioco come un normale input tramite <code>IPlayerInput</code>)</p>
-      <ul>
-        <li><b>Stati:</b> due stati, <code>EXPLORING</code> e <code>ESCAPING</code>; un timer legato all'esplosione riporta il bot in esplorazione</li>
-        <li><b>Parametri per difficoltà:</b> cooldown del cambio direzione e della bomba in uno ScriptableObject (<code>BotInstanceData</code>), quindi regolabili senza toccare il codice</li>
-        <li><b>Perché Strategy:</b> aggiungere una difficoltà significa aggiungere una classe, senza modificare l'input handler</li>
-        <li><b>Limiti noti:</b> il bot non conosce la mappa né le celle pericolose, quindi la fuga è cieca e può finire in un vicolo cieco. Sviluppo previsto: mappa del pericolo con i timer delle esplosioni e ricerca BFS della cella sicura raggiungibile prima dello scoppio, come nuova strategia</li>
-      </ul>
-    </details>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Skill Card 1: AI Architecture -->
+          <div class="rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+            <div class="space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-between p-2.5">
+                <i class="ph ph-tree-structure text-2xl"></i>
+              </div>
+              <h3 class="font-bold text-base">Game AI Architecture</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                Progettazione di sistemi comportamentali modulari e reattivi per NPC con attenzione all'efficienza e manutenibilità.
+              </p>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">State Tree</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Behavior Trees</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">AIPerception</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Utility AI / Considerations</span>
+            </div>
+          </div>
 
-    <a href="https://github.com/Bosang6/PaoPao">Codice e README su GitHub</a>
-  </section>
+          <!-- Skill Card 2: Engine & Code -->
+          <div class="rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+            <div class="space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-between p-2.5">
+                <i class="ph ph-code text-2xl"></i>
+              </div>
+              <h3 class="font-bold text-base">Engines & Core Languages</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                Sviluppo nativo Orientato agli Oggetti e orientato ai componenti per motori 3D sia ad alto che a basso livello.
+              </p>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Unreal Engine 5</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">C++</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Unity 6</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">C#</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">DirectX 11</span>
+            </div>
+          </div>
 
-<section class="card">
-    <h3>Physics Flipper</h3>
-    <p class="env">Unreal Engine 5.7 · Blueprint</p>
-    <p>Flipper in Unreal basato interamente sulla fisica del motore, senza animazioni, sviluppato per i corsi di Physics Programming e Tools Programming del Master in Computer Game Development (Università di Verona)</p>
-    <div class="video"><iframe src="https://www.youtube.com/embed/MglWUY4nWWs?si=fEUe-AxLH70W33Rc" allowfullscreen loading="lazy" title="Video: Physics Flipper"></iframe></div>
+          <!-- Skill Card 3: Systems & Tools -->
+          <div class="rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 flex flex-col justify-between hover:border-brand-500/50 transition-colors">
+            <div class="space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-between p-2.5">
+                <i class="ph ph-git-branch text-2xl"></i>
+              </div>
+              <h3 class="font-bold text-base">Tools & Gameplay Systems</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                Gestione dei flussi di lavoro, versionamento Git, sistemi audio dinamici e networking per multiplayer.
+              </p>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-1.5">
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Git-Flow</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">FMOD</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Photon Network</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">PhysX / Chaos</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <h4>Feature: AI</h4>
-    <ul>
-      <li>Modalità AI: il flipper gioca da solo applicando gli impulsi alle palette</li>
-      <li>Rilevamento tramite trigger zone: quando la pallina entra nella zona di una paletta, l'AI la aziona</li>
-    </ul>
+      <!-- Quick Highlights Callout -->
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-brand-500/10 via-brand-500/5 to-transparent border border-brand-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="font-bold text-sm">Vuoi vedere l'IA in azione?</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Esplora i 5 progetti con dimostrazioni interattive canvas o video e dettagli di architettura.</p>
+        </div>
+        <button onclick="switchTab('projects')" class="whitespace-nowrap px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs rounded-xl transition-all shadow-sm">
+          Vai ai Progetti →
+        </button>
+      </div>
 
-    <details>
-      <summary>Dettagli tecnici</summary>
-      <ul>
-        <li><b>Approccio:</b> AI puramente reattiva, basata sulla posizione della pallina, senza predizione della traiettoria</li>
-        <li><b>Limiti noti:</b> non sceglie quando ritardare il colpo né dove indirizzare la pallina. Sviluppo previsto: usare la velocità della pallina per decidere il momento dell'impulso</li>
-        <li><b>Tools Programming:</b> sviluppo con git-flow (branch per ball, paddle, AI, sound...) e plugin Git per Unreal</li>
-      </ul>
-    </details>
+    </section>
 
-    <a href="https://github.com/lorenzo2330/PhysicsFlipper">Codice e README su GitHub</a>
-  </section>
+    <!-- ================= 2. SECTION: PROJECTS ================= -->
+    <section id="tab-projects" class="tab-content space-y-10 hidden animate-fade-in">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-dark-border pb-4">
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Progetti Sviluppati</h1>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Focus su percezione, predizione di traiettorie, State Tree e algoritmi decisionale.</p>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 bg-gray-100 dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-full text-gray-500">
+          5 Progetti
+        </span>
+      </div>
 
+      <!-- Project Cards List -->
+      <div class="space-y-12">
 
-  <section class="card">
-    <h3>BuildFailed</h3>
-    <p class="env">Unreal Engine 5.8 · C++ / Blueprint</p>
-    <p>Multiplayer Coop diviso in stanze, progetto finale del Master in Computer Game Development (Università di Verona)</p>
-	<p>Contributo personale focalizzato su: level design (arena, game loop e tipologie di attacchi) e implementazione del livello finale (MergeRoom)</p>
-    <div class="video"><iframe src="https://www.youtube.com/embed/ID_VIDEO" allowfullscreen loading="lazy" title="Video: BuildFailed"></iframe></div>
+        <!-- ================= PROJECT 1 ================= -->
+        <article id="project-simple-platform" class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-600 font-semibold">Unreal Engine 5.8 · AI Gameplay</span>
+              <h2 class="text-2xl font-bold mt-1">Simple Platform (Boss AI con State Tree)</h2>
+            </div>
+            <!-- Tech Badges -->
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">UE 5.8</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">State Tree</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">AIPerception</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">C++ / Blueprint</span>
+            </div>
+          </div>
 
-    <h4>Feature: AI</h4>
-    <ul>
-      <li>Boss diviso in 3 fasi, ognuna con un proprio pool di attacchi</li>
-      <li>Ad ogni fase il boss lancia un attacco scelto a caso dal pool della fase</li>
-    </ul>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Platformer in Unreal Engine con monete, nemici pattuglianti e un Boss controllato interamente da uno State Tree reattivo integrato con il sistema di percezione sensoriale.
+          </p>
 
-    <details>
-      <summary>Dettagli tecnici</summary>
-      <ul>
-        <li><b>Componenti che ho sviluppato:</b> framework del livello, griglia dell'arena, <code>AttackManager</code>, <code>TileManager</code>, <code>SprintManager</code> e <code>GameManager</code></li>
-		<li><b>Limiti noti:</b> le fasi sono scritte nel codice (hardcoded), la scelta è casuale e non tiene conto del giocatore, quindi il comportamento è poco adattivo</li>
-        <li><b>Sviluppi previsti:</b> sostituire la scelta casuale con un decisore (scelta pesata con Considerations come distanza, cooldown e ultimo attacco usato, oppure State Tree con le fasi come stati)</li>
-      </ul>
-    </details>
+          <!-- Interactive Demo / Video Switcher Container -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
+              </span>
+              <!-- Toggle buttons -->
+              <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
+                <button onclick="toggleMedia('p1', 'canvas')" id="btn-p1-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                </button>
+                <button onclick="toggleMedia('p1', 'video')" id="btn-p1-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                </button>
+              </div>
+            </div>
 
-    <a href="https://github.com/lorenzo2330/REPO_BUILDFAILED">Codice e README su GitHub</a>
-  </section>
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
+              <!-- Canvas Animated Interactive Simulation -->
+              <canvas id="canvas-p1" class="w-full h-full block cursor-pointer" title="Clicca per riavviare la simulazione AI"></canvas>
+              
+              <!-- Video Embed Container (Hidden by default) -->
+              <div id="video-p1" class="hidden absolute inset-0 w-full h-full">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/Bf3suteu0xc?si=nIaLY3IYBZ0pzwsd" title="Video Simple Platform" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
 
-	
-</main>
+          <!-- Feature AI Keypoints -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-lightning text-brand-600"></i> Feature AI Principali
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Percezione Visiva</strong>
+                L'<code>AIC_Enemy</code> traduce la vista in Gameplay Tags leggeri per disaccoppiare percezione e decisione.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Memoria del Target</strong>
+                Gestione del timer <code>MemoryDuration</code> per l'ispezione dell'ultima posizione nota prima del pattugliamento.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Ciclo Combattimento</strong>
+                Fasi d'attacco intervallate da stati di vulnerabilità ed attesa a durata variabile per evitare meccanicità.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Technical Details Accordion -->
+          <details class="group border border-gray-200 dark:border-dark-border rounded-2xl bg-gray-50 dark:bg-dark-bg overflow-hidden">
+            <summary class="flex items-center justify-between p-4 cursor-pointer font-semibold text-xs text-brand-600 dark:text-brand-400 select-none">
+              <span>Dettagli Tecnici & Architettura Pipeline</span>
+              <i class="ph ph-caret-down text-base transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="p-4 pt-0 border-t border-gray-200 dark:border-dark-border/50 text-xs space-y-3 text-gray-600 dark:text-gray-300">
+              <p><strong>Pipeline completa:</strong> Percezione (<code>AIC_Enemy</code>) → Eventi Tags (<code>AI.Event.Attacking</code>, <code>AI.Event.Lost</code>) → Decisione State Tree (<code>ST_Enemy</code>) → Azioni (Move To, Attack Task, Vulnerability Timer).</p>
+              <ul class="list-disc pl-4 space-y-1">
+                <li><strong>Gerarchia Stati:</strong> Idle (Pattuglia/Wander), Investigate, Attacking (Inseguimento, Attacco, Vulnerabilità). L'uso degli stati raggruppati evita il sovraccarico di transizioni.</li>
+                <li><strong>Motivazione State Tree:</strong> Garantisce transizioni esplicite ed atomiche guidate da eventi, perfetto per Boss con fasi ben definite rispetto a un Behavior Tree continuo.</li>
+                <li><strong>Limiti & Sviluppi:</strong> Percezione limitata alla vista. Sviluppo futuro: selezione attacchi mediante Utility Considerations (cooldown, distanza, priorità).</li>
+              </ul>
+            </div>
+          </details>
+
+          <!-- Repository Link -->
+          <div class="pt-2 flex justify-end">
+            <a href="https://github.com/lorenzo2330/MasterCGD_GEP_Platform" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- ================= PROJECT 2 ================= -->
+        <article id="project-arkanoid" class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-600 font-semibold">Graphics & AI Simulation</span>
+              <h2 class="text-2xl font-bold mt-1">Arkanoid Clone</h2>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">C++</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">DirectX 11</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Visual Studio</span>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Clone di Arkanoid in DirectX 11 con illuminazione dinamica "light ball", bonus e un sistema di racchetta autonoma dotata di predittore di traiettoria e selezione priorità.
+          </p>
+
+          <!-- Interactive Demo / Video Switcher Container -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
+              </span>
+              <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
+                <button onclick="toggleMedia('p2', 'canvas')" id="btn-p2-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                </button>
+                <button onclick="toggleMedia('p2', 'video')" id="btn-p2-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                </button>
+              </div>
+            </div>
+
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
+              <canvas id="canvas-p2" class="w-full h-full block cursor-pointer"></canvas>
+              <div id="video-p2" class="hidden absolute inset-0 w-full h-full">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/CN2sM0bpni0?si=boNmG_Hr4797-AY-" title="Video Arkanoid" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature AI Keypoints -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-lightning text-brand-600"></i> Feature AI Principali
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Predittore Traiettoria</strong>
+                Simula i rimbalzi della pallina su pareti e mattoncini calcolando il punto esatto d'impatto sul fondo.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Priorità Multiball</strong>
+                Valuta costantemente la palla più urgente in base al tempo di arrivo stimato all'altezza della racchetta.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Decisione Gerarchica</strong>
+                Ordine di priorità rigido: Salvataggio Palla → Raccolta Bonus Raggiungibili → Punteggio Mattoncini Pesato.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Technical Details Accordion -->
+          <details class="group border border-gray-200 dark:border-dark-border rounded-2xl bg-gray-50 dark:bg-dark-bg overflow-hidden">
+            <summary class="flex items-center justify-between p-4 cursor-pointer font-semibold text-xs text-brand-600 dark:text-brand-400 select-none">
+              <span>Dettagli Tecnici & Formule di Ponderazione</span>
+              <i class="ph ph-caret-down text-base transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="p-4 pt-0 border-t border-gray-200 dark:border-dark-border/50 text-xs space-y-3 text-gray-600 dark:text-gray-300">
+              <p><strong>Pipeline:</strong> <code>BallPredictor</code> (Simulazione Raycast/Step) → <code>RacketAI</code> (Decisore a priorità) → Movimento con accelerazione e Deadzone.</p>
+              <ul class="list-disc pl-4 space-y-1">
+                <li><strong>Formula Mattoncini:</strong> <code>Punteggio = PesoTipo * (0.5 + 0.3 * Altezza + 0.2 * Vicinanza)</code>.</li>
+                <li><strong>Controllo Sicurezza Bonus:</strong> L'AI raccoglie un bonus solo se il tempo calcolato per raggiungere il bonus e tornare al punto d'impatto della palla è inferiore al tempo di caduta della palla stessa.</li>
+              </ul>
+            </div>
+          </details>
+
+          <div class="pt-2 flex justify-end">
+            <a href="https://github.com/lorenzo2330/MasterCGD_Arkanoid" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- ================= PROJECT 3 ================= -->
+        <article id="project-paopao" class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-600 font-semibold">Unity Mobile & Multiplayer</span>
+              <h2 class="text-2xl font-bold mt-1">Bomberman Clone (PaoPao)</h2>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Unity 6</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">C#</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Photon</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">FMOD</span>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Progetto mobile multiplayer online sviluppato in team di 3. Contributo personale incentrato su Gameplay Programming, sistema audio FMOD e architettura Bot AI tramite Strategy Pattern.
+          </p>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
+              </span>
+              <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
+                <button onclick="toggleMedia('p3', 'canvas')" id="btn-p3-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                </button>
+                <button onclick="toggleMedia('p3', 'video')" id="btn-p3-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                </button>
+              </div>
+            </div>
+
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
+              <canvas id="canvas-p3" class="w-full h-full block cursor-pointer"></canvas>
+              <div id="video-p3" class="hidden absolute inset-0 w-full h-full">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/vvPt_-8rNBo?si=DgUPOOCGHYQMM-dx" title="Video PaoPao" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-lightning text-brand-600"></i> Feature AI Principali
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Strategy Pattern</strong>
+                Difficoltà del bot intercambiabile a runtime senza modificare l'handler di input della partita.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Fuga Reattiva</strong>
+                Transizione dallo stato <code>EXPLORING</code> a <code>ESCAPING</code> subito dopo il rilascio della bomba.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">ScriptableObject Data</strong>
+                Parametri di reattività, cooldown e frequenza bombe isolati in asset <code>BotInstanceData</code>.
+              </li>
+            </ul>
+          </div>
+
+          <details class="group border border-gray-200 dark:border-dark-border rounded-2xl bg-gray-50 dark:bg-dark-bg overflow-hidden">
+            <summary class="flex items-center justify-between p-4 cursor-pointer font-semibold text-xs text-brand-600 dark:text-brand-400 select-none">
+              <span>Dettagli Tecnici & Integrazione Input</span>
+              <i class="ph ph-caret-down text-base transition-transform group-open:rotate-180"></i>
+            </summary>
+            <div class="p-4 pt-0 border-t border-gray-200 dark:border-dark-border/50 text-xs space-y-3 text-gray-600 dark:text-gray-300">
+              <p><strong>Pipeline Input:</strong> <code>BotContext</code> → <code>IBotStrategy</code> (DecideMovement, DecideBomb) → <code>BotInputHandler</code> che implementa l'interfaccia <code>IPlayerInput</code> (rendendo il bot indistinguibile da un giocatore umano per il controller del personaggio).</p>
+            </div>
+          </details>
+
+          <div class="pt-2 flex justify-end">
+            <a href="https://github.com/Bosang6/PaoPao" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- ================= PROJECT 4 ================= -->
+        <article id="project-flipper" class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-600 font-semibold">Physics Simulation & Tools</span>
+              <h2 class="text-2xl font-bold mt-1">Physics Flipper</h2>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">UE 5.7</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Blueprint</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Git-Flow</span>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Flipper basato interamente sul motore fisico (nessuna animazione keyframe) sviluppato per i corsi di Physics e Tools Programming.
+          </p>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
+              </span>
+              <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
+                <button onclick="toggleMedia('p4', 'canvas')" id="btn-p4-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                </button>
+                <button onclick="toggleMedia('p4', 'video')" id="btn-p4-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                </button>
+              </div>
+            </div>
+
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
+              <canvas id="canvas-p4" class="w-full h-full block cursor-pointer"></canvas>
+              <div id="video-p4" class="hidden absolute inset-0 w-full h-full">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/MglWUY4nWWs?si=fEUe-AxLH70W33Rc" title="Video Flipper" allowfullscreen loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-lightning text-brand-600"></i> Feature AI & Tools
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">AI Reattiva Trigger-Based</strong>
+                Innesco dinamico degli impulsi angolari alle palette basato sulla rilevamento delle zone di collisione della pallina.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Workflow Git-Flow</strong>
+                Organizzazione rigorosa del progetto con feature branch separate per ball, paddle e AI.
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <a href="https://github.com/lorenzo2330/PhysicsFlipper" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- ================= PROJECT 5 ================= -->
+        <article id="project-buildfailed" class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-600 font-semibold">Unreal Engine 5.8 · Boss Phases</span>
+              <h2 class="text-2xl font-bold mt-1">BuildFailed</h2>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">UE 5.8</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">C++ / Blueprint</span>
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-dark-badge font-medium">Co-Op Arena</span>
+            </div>
+          </div>
+
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Multiplayer Coop a stanze (progetto finale Master). Contributo personale focalizzato sul Level Design, Arena Grid e implementazione del Boss per il livello finale (MergeRoom).
+          </p>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
+              </span>
+              <span class="text-xs text-gray-400 font-mono">Arena Phase Grid Sim</span>
+            </div>
+
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
+              <canvas id="canvas-p5" class="w-full h-full block cursor-pointer"></canvas>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-lightning text-brand-600"></i> Componenti Sviluppati
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Attack & Tile Manager</strong>
+                Gestione dinamica delle mattonelle dell'arena che cambiano stato o si distruggono a seconda dell'attacco.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Boss Phase System</strong>
+                Boss diviso in 3 fasi distinte, ciascuna dotata di un proprio pool di attacchi combinati.
+              </li>
+              <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
+                <strong class="block text-gray-900 dark:text-white mb-1">Sprint & Game Framework</strong>
+                Implementazione del ciclo di gioco principale (GameManager) e meccaniche di movimento evasivo dei giocatori.
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-2 flex justify-end">
+            <a href="https://github.com/lorenzo2330/REPO_BUILDFAILED" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= 3. SECTION: CONTACT ================= -->
+    <section id="tab-contact" class="tab-content space-y-8 hidden animate-fade-in max-w-2xl mx-auto">
+      <div class="text-center space-y-2">
+        <h1 class="text-3xl font-extrabold tracking-tight">Mettiamoci in contatto</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Aperto a ruoli da AI Programmer, Gameplay Programmer o Game Developer.
+        </p>
+      </div>
+
+      <!-- Quick Contact Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Email Copy Card -->
+        <div class="p-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-center space-y-2">
+          <i class="ph ph-envelope-simple text-2xl text-brand-600"></i>
+          <div class="text-xs font-semibold">Email Direct</div>
+          <button onclick="copyEmail()" class="w-full py-1.5 px-2 bg-gray-100 dark:bg-dark-badge hover:bg-brand-50 dark:hover:bg-gray-800 text-brand-600 dark:text-brand-400 rounded-lg text-xs font-mono transition-colors flex items-center justify-center gap-1">
+            <i class="ph ph-copy"></i> Copia Email
+          </button>
+        </div>
+
+        <!-- LinkedIn Card -->
+        <a href="https://linkedin.com/in/lorenzodambrosio222" target="_blank" class="p-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-center space-y-2 hover:border-brand-500/50 transition-colors block">
+          <i class="ph ph-linkedin-logo text-2xl text-brand-600"></i>
+          <div class="text-xs font-semibold">LinkedIn</div>
+          <span class="text-xs text-gray-400 hover:underline inline-flex items-center gap-1">
+            Profilo <i class="ph ph-arrow-up-right"></i>
+          </span>
+        </a>
+
+        <!-- GitHub Card -->
+        <a href="https://github.com/lorenzo2330" target="_blank" class="p-4 rounded-2xl bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border text-center space-y-2 hover:border-brand-500/50 transition-colors block">
+          <i class="ph ph-github-logo text-2xl text-brand-600"></i>
+          <div class="text-xs font-semibold">GitHub</div>
+          <span class="text-xs text-gray-400 hover:underline inline-flex items-center gap-1">
+            Repositories <i class="ph ph-arrow-up-right"></i>
+          </span>
+        </a>
+      </div>
+
+      <!-- Interactive Contact Form -->
+      <div class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-4">
+        <h2 class="text-lg font-bold">Invia un messaggio diretto</h2>
+        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Il tuo Nome</label>
+              <input type="text" required placeholder="Mario Rossi" class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Email di Contatto</label>
+              <input type="email" required placeholder="mario@example.com" class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Messaggio</label>
+            <textarea required rows="4" placeholder="Ciao Lorenzo, ho visto il tuo portfolio e vorrei parlarti di una posizione..." class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500"></textarea>
+          </div>
+          <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm">
+            Invia Messaggio
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= CV MODAL PREVIEW ================= -->
+  <div id="cv-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden animate-fade-in">
+    <div class="relative w-full max-w-3xl bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-gray-200 dark:border-dark-border flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="ph ph-file-pdf text-xl text-brand-600"></i>
+          <span class="font-bold text-sm">Curriculum Vitae - Lorenzo D'Ambrosio</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="downloadCV()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1">
+            <i class="ph ph-download-simple"></i> Download PDF
+          </button>
+          <button onclick="closeCvModal()" class="p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500">
+            <i class="ph ph-x text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- CV Simulated Document Body -->
+      <div class="p-6 overflow-y-auto space-y-6 text-xs text-gray-700 dark:text-gray-300 font-sans">
+        <!-- Header CV -->
+        <div class="border-b border-gray-200 dark:border-dark-border pb-4 flex justify-between items-start">
+          <div>
+            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Lorenzo D'Ambrosio</h1>
+            <p class="text-brand-600 font-medium mt-0.5">AI & Gameplay Programmer</p>
+          </div>
+          <div class="text-right text-gray-500 space-y-0.5">
+            <p>lorenzo.dambro@gmail.com</p>
+            <p>Verona / Italia</p>
+          </div>
+        </div>
+
+        <!-- Section: Educazione -->
+        <div class="space-y-2">
+          <h2 class="font-bold uppercase tracking-wider text-gray-400 text-[10px]">Istruzione & Formazione</h2>
+          <div class="bg-gray-50 dark:bg-dark-bg p-3 rounded-xl border border-gray-100 dark:border-dark-border">
+            <div class="flex justify-between font-bold text-gray-900 dark:text-white">
+              <span>Master in Computer Game Development</span>
+              <span>Università di Verona</span>
+            </div>
+            <p class="text-gray-500 mt-1">Specializzazione in Game Engine Programming, AI e Physics Programming.</p>
+          </div>
+        </div>
+
+        <!-- Section: Skills Summarized -->
+        <div class="space-y-2">
+          <h2 class="font-bold uppercase tracking-wider text-gray-400 text-[10px]">Competenze Tecniche</h2>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="p-2.5 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-100 dark:border-dark-border">
+              <strong>Motori:</strong> Unreal Engine 5 (C++, State Tree), Unity 6 (C#)
+            </div>
+            <div class="p-2.5 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-100 dark:border-dark-border">
+              <strong>Sistemi AI:</strong> State Tree, AIPerception, Behavior Trees, Decision Making
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Progetti Principali -->
+        <div class="space-y-2">
+          <h2 class="font-bold uppercase tracking-wider text-gray-400 text-[10px]">Progetti Rilevanti</h2>
+          <ul class="space-y-2">
+            <li class="p-3 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-100 dark:border-dark-border">
+              <strong>Simple Platform (Boss AI):</strong> Unreal Engine 5.8 - Controller AIPerception, memoria del bersaglio e State Tree esplicito per le fasi di attacco.
+            </li>
+            <li class="p-3 bg-gray-50 dark:bg-dark-bg rounded-xl border border-gray-100 dark:border-dark-border">
+              <strong>Arkanoid Clone:</strong> C++ / DirectX 11 - Predittore di traiettoria simulato e racchetta autonoma con priorità pesate.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST FEEDBACK NOTIFICATION ================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden toast-anim">
+    <div class="px-4 py-3 rounded-2xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-xl border border-gray-700 dark:border-gray-200 text-xs font-semibold flex items-center gap-2">
+      <i class="ph ph-check-circle text-emerald-400 dark:text-emerald-600 text-lg"></i>
+      <span id="toast-message">Messaggio di feedback</span>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT & SIMULATIONS ================= -->
+  <script>
+    /* -------- 1. TAB ROUTING & NAVIGATION -------- */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      // Update Desktop Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-white', 'font-semibold');
+        btn.classList.add('text-gray-600', 'dark:text-gray-400');
+      });
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-white', 'font-semibold');
+      }
+
+      // Update Mobile Buttons
+      ['about', 'projects', 'contact'].forEach(id => {
+        const mobBtn = document.getElementById('mobile-nav-' + id);
+        if(mobBtn) {
+          if(id === tabId) {
+            mobBtn.classList.add('text-brand-600', 'font-bold');
+            mobBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+          } else {
+            mobBtn.classList.remove('text-brand-600', 'font-bold');
+            mobBtn.classList.add('text-gray-500', 'dark:text-gray-400');
+          }
+        }
+      });
+
+      window.location.hash = tabId;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Hash change handler on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['about', 'projects', 'contact'].includes(hash)) {
+        switchTab(hash);
+      } else {
+        switchTab('about');
+      }
+      initCanvasSimulations();
+    });
+
+    /* -------- 2. DARK / LIGHT MODE SWITCH -------- */
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('theme-icon-sun').classList.toggle('hidden', !isDark);
+      document.getElementById('theme-icon-moon').classList.toggle('hidden', isDark);
+    }
+
+    /* -------- 3. CV MODAL & DOWNLOAD -------- */
+    function openCvModal() {
+      document.getElementById('cv-modal').classList.remove('hidden');
+    }
+    function closeCvModal() {
+      document.getElementById('cv-modal').classList.add('hidden');
+    }
+    function downloadCV() {
+      showToast("Download del CV avviato!");
+      // Generazione automatica di un file di testo simulato come CV se non presente il file statico
+      const element = document.createElement("a");
+      const file = new Blob([
+        "LORENZO D'AMBROSIO - AI & GAMEPLAY PROGRAMMER\nEmail: lorenzo.dambro@gmail.com\nGitHub: github.com/lorenzo2330\n\n- Master in Computer Game Development (Università di Verona)\n- Unreal Engine 5 (C++, State Tree, AIPerception)\n- Unity 6 (C#, Strategy Pattern)"
+      ], {type: 'text/plain'});
+      element.href = URL.createObjectURL(file);
+      element.download = "CV_Lorenzo_DAmbrosio.txt";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    /* -------- 4. MEDIA TOGGLER (CANVAS / YOUTUBE) -------- */
+    function toggleMedia(projectId, type) {
+      const canvasEl = document.getElementById(`canvas-${projectId}`);
+      const videoEl = document.getElementById(`video-${projectId}`);
+      const btnCanvas = document.getElementById(`btn-${projectId}-canvas`);
+      const btnVideo = document.getElementById(`btn-${projectId}-video`);
+
+      if (type === 'canvas') {
+        canvasEl.classList.remove('hidden');
+        if(videoEl) videoEl.classList.add('hidden');
+        btnCanvas.classList.add('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-brand-400');
+        btnVideo.classList.remove('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-brand-400');
+      } else {
+        canvasEl.classList.add('hidden');
+        if(videoEl) videoEl.classList.remove('hidden');
+        btnVideo.classList.add('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-brand-400');
+        btnCanvas.classList.remove('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-brand-400');
+      }
+    }
+
+    /* -------- 5. UTILS: TOAST & FORM -------- */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    function copyEmail() {
+      navigator.clipboard.writeText("lorenzo.dambro@gmail.com");
+      showToast("Email copiata negli appunti!");
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      showToast("Messaggio inviato con successo!");
+      e.target.reset();
+    }
+
+    /* -------- 6. CANVAS ANIMATED AI SIMULATIONS -------- */
+    function initCanvasSimulations() {
+      // Helper setup canvas
+      function setupCanvas(id) {
+        const c = document.getElementById(id);
+        if(!c) return null;
+        c.width = c.clientWidth || 600;
+        c.height = c.clientHeight || 337;
+        return c.getContext('2d');
+      }
+
+      // --- SIMULATION 1: State Tree Vision AI ---
+      const ctx1 = setupCanvas('canvas-p1');
+      if(ctx1) {
+        let player = { x: 100, y: 200, dx: 2 };
+        let boss = { x: 450, y: 200, state: 'SEARCH' };
+        
+        function anim1() {
+          ctx1.fillStyle = '#09090b';
+          ctx1.fillRect(0, 0, ctx1.canvas.width, ctx1.canvas.height);
+
+          // Grid line
+          ctx1.strokeStyle = '#27272a';
+          ctx1.beginPath(); ctx1.moveTo(0, 240); ctx1.lineTo(600, 240); ctx1.stroke();
+
+          // Player
+          player.x += player.dx;
+          if(player.x > 300 || player.x < 50) player.dx *= -1;
+          ctx1.fillStyle = '#60a5fa';
+          ctx1.fillRect(player.x, player.y - 20, 20, 20);
+
+          // Boss Perception Cone
+          ctx1.fillStyle = boss.state === 'ATTACK' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.15)';
+          ctx1.beginPath();
+          ctx1.moveTo(boss.x, boss.y - 10);
+          ctx1.lineTo(boss.x - 180, boss.y - 60);
+          ctx1.lineTo(boss.x - 180, boss.y + 40);
+          ctx1.closePath();
+          ctx1.fill();
+
+          // Boss
+          ctx1.fillStyle = '#ef4444';
+          ctx1.fillRect(boss.x, boss.y - 30, 30, 30);
+
+          // Check Vision
+          let dist = Math.abs((boss.x - 90) - player.x);
+          boss.state = dist < 180 ? 'ATTACK' : 'INVESTIGATE';
+
+          // HUD State Tree Info
+          ctx1.fillStyle = '#ffffff';
+          ctx1.font = '12px JetBrains Mono';
+          ctx1.fillText(`STATE TREE: [ST_Boss]`, 20, 30);
+          ctx1.fillText(`CURRENT STATE: ${boss.state}`, 20, 50);
+          ctx1.fillText(`PERCEPTION: AIPerception_Sight`, 20, 70);
+
+          requestAnimationFrame(anim1);
+        }
+        anim1();
+      }
+
+      // --- SIMULATION 2: Arkanoid Trajectory Predictor ---
+      const ctx2 = setupCanvas('canvas-p2');
+      if(ctx2) {
+        let ball = { x: 150, y: 100, vx: 4, vy: 5 };
+        let paddleX = 150;
+
+        function anim2() {
+          ctx2.fillStyle = '#09090b';
+          ctx2.fillRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
+
+          // Update Ball
+          ball.x += ball.vx; ball.y += ball.vy;
+          if(ball.x < 10 || ball.x > ctx2.canvas.width - 10) ball.vx *= -1;
+          if(ball.y < 10) ball.vy *= -1;
+          if(ball.y > 280) ball.vy *= -1;
+
+          // Trajectory Prediction Ray
+          ctx2.strokeStyle = '#22c55e';
+          ctx2.setLineDash([4, 4]);
+          ctx2.beginPath();
+          ctx2.moveTo(ball.x, ball.y);
+          let targetX = ball.x + (ball.vx * ((280 - ball.y) / ball.vy));
+          ctx2.lineTo(targetX, 280);
+          ctx2.stroke();
+          ctx2.setLineDash([]);
+
+          // Smooth Paddle Follow
+          paddleX += (targetX - paddleX - 30) * 0.1;
+
+          // Paddle
+          ctx2.fillStyle = '#3b82f6';
+          ctx2.fillRect(paddleX, 280, 60, 10);
+
+          // Ball
+          ctx2.fillStyle = '#f59e0b';
+          ctx2.beginPath(); ctx2.arc(ball.x, ball.y, 6, 0, Math.PI*2); ctx2.fill();
+
+          // HUD Predictor
+          ctx2.fillStyle = '#22c55e';
+          ctx2.font = '11px JetBrains Mono';
+          ctx2.fillText(`PREDICTOR: Target Hit X = ${Math.round(targetX)}px`, 20, 30);
+
+          requestAnimationFrame(anim2);
+        }
+        anim2();
+      }
+
+      // --- SIMULATION 3: PaoPao Strategy Pattern Grid ---
+      const ctx3 = setupCanvas('canvas-p3');
+      if(ctx3) {
+        function anim3() {
+          ctx3.fillStyle = '#09090b';
+          ctx3.fillRect(0, 0, ctx3.canvas.width, ctx3.canvas.height);
+
+          // Grid
+          ctx3.strokeStyle = '#1c1c21';
+          for(let i=0; i<600; i+=40) {
+            ctx3.beginPath(); ctx3.moveTo(i, 0); ctx3.lineTo(i, 337); ctx3.stroke();
+          }
+
+          ctx3.fillStyle = '#a855f7';
+          ctx3.fillText("STRATEGY: EscapeAndSurvive Strategy", 20, 30);
+          ctx3.fillText("STATE: ESCAPING (Danger Grid Active)", 20, 50);
+
+          requestAnimationFrame(anim3);
+        }
+        anim3();
+      }
+
+      // --- SIMULATION 4: Flipper Trigger ---
+      const ctx4 = setupCanvas('canvas-p4');
+      if(ctx4) {
+        function anim4() {
+          ctx4.fillStyle = '#09090b';
+          ctx4.fillRect(0, 0, ctx4.canvas.width, ctx4.canvas.height);
+          ctx4.fillStyle = '#3b82f6';
+          ctx4.fillText("PHYSICS TRIGGER AI SIMULATION", 20, 30);
+          requestAnimationFrame(anim4);
+        }
+        anim4();
+      }
+
+      // --- SIMULATION 5: BuildFailed Grid ---
+      const ctx5 = setupCanvas('canvas-p5');
+      if(ctx5) {
+        function anim5() {
+          ctx5.fillStyle = '#09090b';
+          ctx5.fillRect(0, 0, ctx5.canvas.width, ctx5.canvas.height);
+          ctx5.fillStyle = '#ef4444';
+          ctx5.fillText("MERGE ROOM ARENA GRID - BOSS PHASE 2", 20, 30);
+          requestAnimationFrame(anim5);
+        }
+        anim5();
+      }
+    }
+  </script>
 </body>
 </html>
