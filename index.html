@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Lorenzo D'Ambrosio - Portfolio di AI & Gameplay Programmer">
-  <title>Lorenzo D'Ambrosio · AI & Gameplay Programmer</title>
+  <meta name="description" content="Lorenzo D'Ambrosio - Studente del Master in CGD (UniVR), mi sto specializzando in game AI per NPC: percezione, decisioni e navigazione. Unreal e Unity.">
+  <title>Lorenzo D'Ambrosio · Game AI & Gameplay Programming</title>
   
   <!-- Tailwind CSS per layout fluido e stile Bento Grid -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>try{if(localStorage.theme==='light')document.documentElement.classList.remove('dark')}catch(e){}</script>
   <!-- Phosphor Icons per un'iconografia developer moderna -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
   
   <script>
     tailwind.config = {
@@ -42,7 +46,7 @@
 
   <style>
     /* Transizioni morbide per lo switch dark/light */
-    body, div, section, header, nav, button, a {
+    body, header, nav, button, a {
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
     
@@ -58,6 +62,10 @@
       border-radius: 4px;
     }
 
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .animate-fade-in { animation: fadeIn .35s ease-out both; }
+    /* Segnaposto finché la GIF non esiste */
+    .gif-missing::before { content: 'GIF in arrivo'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #71717a; font: 12px 'JetBrains Mono', monospace; }
     /* Animazione Toast */
     @keyframes slideUp {
       from { transform: translateY(100%); opacity: 0; }
@@ -95,8 +103,8 @@
       <!-- Right Actions: Theme Toggle & CV -->
       <div class="flex items-center gap-2">
         <button id="theme-toggle" onclick="toggleDarkMode()" aria-label="Cambia tema" class="p-2 rounded-xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-          <i id="theme-icon-sun" class="ph ph-sun text-lg hidden"></i>
-          <i id="theme-icon-moon" class="ph ph-moon text-lg"></i>
+          <i id="theme-icon-sun" class="ph ph-sun text-lg"></i>
+          <i id="theme-icon-moon" class="ph ph-moon text-lg hidden"></i>
         </button>
 
         <button onclick="openCvModal()" class="hidden sm:flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-sm">
@@ -105,6 +113,8 @@
         </button>
       </div>
     </div>
+
+  </header>
 
     <!-- Mobile Nav Bar (Bottom) -->
     <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-dark-bg/90 backdrop-blur-lg border-t border-gray-200 dark:border-dark-border px-4 py-2 flex justify-around items-center">
@@ -125,7 +135,7 @@
         <span>CV</span>
       </button>
     </div>
-  </header>
+
 
   <!-- ================= MAIN CONTENT CONTAINER ================= -->
   <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-12">
@@ -149,11 +159,12 @@
               Lorenzo D'Ambrosio
             </h1>
             <p class="text-lg text-brand-600 dark:text-brand-500 font-semibold tracking-wide">
-              AI & Gameplay Programmer
+              Aspiring AI & Gameplay Programmer
             </p>
             <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
-              Specializzato in architetture decisionale per NPC, sistemi di percezione visiva/uditiva, navigazione e comportamenti di combattimento.
-              Master in Computer Game Development presso l'Università di Verona. Sviluppo principalmente in <strong class="text-gray-900 dark:text-white">Unreal Engine 5 (C++, State Tree)</strong> e <strong class="text-gray-900 dark:text-white">Unity (C#)</strong>.
+              Nato e cresciuto tra Bolzano e Trento, sviluppo fin da subito una passione per i videogiochi, che mi ha portato prima al completamento di una laurea triennale in Informatica presso l'Università di Trento e successivamente al Master in Computer Game Development presso l'Università di Verona (in corso).
+              Il mio interesse principale riguarda lo sviluppo di architetture decisionali per NPC, sistemi di percezione e comportamenti di combattimento.
+              Sviluppo principalmente in <strong class="text-gray-900 dark:text-white">Unreal Engine 5 (C++, State Tree)</strong> e <strong class="text-gray-900 dark:text-white">Unity (C#)</strong>.
             </p>
 
             <!-- Quick Links -->
@@ -178,10 +189,30 @@
               <button onclick="openCvModal()" class="w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs px-4 py-2.5 rounded-xl transition-all">
                 <i class="ph ph-eye text-sm"></i> Visualizza CV
               </button>
-              <a href="#download-cv" onclick="downloadCV()" class="w-full inline-flex items-center justify-center gap-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium text-xs px-4 py-2 rounded-xl transition-all">
+              <a href="assets/CV_Lorenzo_DAmbrosio.pdf" download class="w-full inline-flex items-center justify-center gap-2 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium text-xs px-4 py-2 rounded-xl transition-all">
                 <i class="ph ph-download-simple text-sm"></i> Download Diretto
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-bold flex items-center gap-2"><i class="ph ph-compass text-brand-600 text-2xl"></i> Approccio &amp; Soft Skills</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 space-y-3 hover:border-brand-500/50 transition-colors">
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-500 to-brand-500/0"></div>
+            <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center"><i class="ph ph-strategy text-2xl"></i></div>
+            <h3 class="font-bold text-base">Competitivo &amp; Strategico</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">La passione per il gaming competitivo mi ha dato sensibilità per la <em>game logic</em>: leggere le dinamiche di gioco, stimare le probabilità e tradurle in comportamenti decisionali per gli NPC.</p>
+            <div class="flex flex-wrap gap-1.5 pt-1"><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Game Logic</span><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Decision Making</span><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Lettura del gioco</span></div>
+          </div>
+          <div class="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 space-y-3 hover:border-brand-500/50 transition-colors">
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-500 to-brand-500/0"></div>
+            <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center"><i class="ph ph-users-three text-2xl"></i></div>
+            <h3 class="font-bold text-base">Lavoro di Squadra &amp; Gestione dello Stress</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">L'esperienza lavorativa in ambienti dinamici e ad alto ritmo mi ha insegnato a collaborare in team, gestire le priorità sotto pressione, comunicare in modo chiaro e adattarmi ai cambiamenti.</p>
+            <div class="flex flex-wrap gap-1.5 pt-1"><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Teamwork</span><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Priorità</span><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Comunicazione</span><span class="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-dark-badge font-mono">Adattabilità</span></div>
           </div>
         </div>
       </div>
@@ -258,7 +289,7 @@
       <div class="p-6 rounded-2xl bg-gradient-to-r from-brand-500/10 via-brand-500/5 to-transparent border border-brand-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <h3 class="font-bold text-sm">Vuoi vedere l'IA in azione?</h3>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Esplora i 5 progetti con dimostrazioni interattive canvas o video e dettagli di architettura.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Esplora i 5 progetti con GIF, video completi e dettagli di architettura.</p>
         </div>
         <button onclick="switchTab('projects')" class="whitespace-nowrap px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-xs rounded-xl transition-all shadow-sm">
           Vai ai Progetti →
@@ -310,18 +341,18 @@
               </span>
               <!-- Toggle buttons -->
               <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
-                <button onclick="toggleMedia('p1', 'canvas')" id="btn-p1-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
-                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                <button onclick="toggleMedia('p1', 'gif')" id="btn-p1-gif" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-image mr-1"></i> GIF
                 </button>
                 <button onclick="toggleMedia('p1', 'video')" id="btn-p1-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
-                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                  <i class="ph ph-youtube-logo mr-1"></i> Video completo
                 </button>
               </div>
             </div>
 
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
               <!-- Canvas Animated Interactive Simulation -->
-              <canvas id="canvas-p1" class="w-full h-full block cursor-pointer" title="Clicca per riavviare la simulazione AI"></canvas>
+              <img id="gif-p1" src="media/gep-boss.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
               
               <!-- Video Embed Container (Hidden by default) -->
               <div id="video-p1" class="hidden absolute inset-0 w-full h-full">
@@ -400,17 +431,17 @@
                 <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
               </span>
               <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
-                <button onclick="toggleMedia('p2', 'canvas')" id="btn-p2-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
-                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                <button onclick="toggleMedia('p2', 'gif')" id="btn-p2-gif" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-image mr-1"></i> GIF
                 </button>
                 <button onclick="toggleMedia('p2', 'video')" id="btn-p2-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
-                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                  <i class="ph ph-youtube-logo mr-1"></i> Video completo
                 </button>
               </div>
             </div>
 
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
-              <canvas id="canvas-p2" class="w-full h-full block cursor-pointer"></canvas>
+              <img id="gif-p2" src="media/arkanoid-ai.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
               <div id="video-p2" class="hidden absolute inset-0 w-full h-full">
                 <iframe class="w-full h-full" src="https://www.youtube.com/embed/CN2sM0bpni0?si=boNmG_Hr4797-AY-" title="Video Arkanoid" allowfullscreen loading="lazy"></iframe>
               </div>
@@ -445,7 +476,7 @@
               <i class="ph ph-caret-down text-base transition-transform group-open:rotate-180"></i>
             </summary>
             <div class="p-4 pt-0 border-t border-gray-200 dark:border-dark-border/50 text-xs space-y-3 text-gray-600 dark:text-gray-300">
-              <p><strong>Pipeline:</strong> <code>BallPredictor</code> (Simulazione Raycast/Step) → <code>RacketAI</code> (Decisore a priorità) → Movimento con accelerazione e Deadzone.</p>
+              <p><strong>Pipeline:</strong> <code>BallPredictor</code> (Simulazione Raycast/Step) → <code>RacketAI</code> (Decisore a priorità) → Movimento a velocità limitata con dead zone ed errore.</p>
               <ul class="list-disc pl-4 space-y-1">
                 <li><strong>Formula Mattoncini:</strong> <code>Punteggio = PesoTipo * (0.5 + 0.3 * Altezza + 0.2 * Vicinanza)</code>.</li>
                 <li><strong>Controllo Sicurezza Bonus:</strong> L'AI raccoglie un bonus solo se il tempo calcolato per raggiungere il bonus e tornare al punto d'impatto della palla è inferiore al tempo di caduta della palla stessa.</li>
@@ -485,17 +516,17 @@
                 <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
               </span>
               <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
-                <button onclick="toggleMedia('p3', 'canvas')" id="btn-p3-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
-                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                <button onclick="toggleMedia('p3', 'gif')" id="btn-p3-gif" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-image mr-1"></i> GIF
                 </button>
                 <button onclick="toggleMedia('p3', 'video')" id="btn-p3-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
-                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                  <i class="ph ph-youtube-logo mr-1"></i> Video completo
                 </button>
               </div>
             </div>
 
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
-              <canvas id="canvas-p3" class="w-full h-full block cursor-pointer"></canvas>
+              <img id="gif-p3" src="media/paopao.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
               <div id="video-p3" class="hidden absolute inset-0 w-full h-full">
                 <iframe class="w-full h-full" src="https://www.youtube.com/embed/vvPt_-8rNBo?si=DgUPOOCGHYQMM-dx" title="Video PaoPao" allowfullscreen loading="lazy"></iframe>
               </div>
@@ -509,11 +540,11 @@
             <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
                 <strong class="block text-gray-900 dark:text-white mb-1">Strategy Pattern</strong>
-                Difficoltà del bot intercambiabile a runtime senza modificare l'handler di input della partita.
+                Strategia scelta dal livello di difficoltà: una nuova difficoltà è una nuova classe, senza toccare l'handler di input.
               </li>
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
-                <strong class="block text-gray-900 dark:text-white mb-1">Fuga Reattiva</strong>
-                Transizione dallo stato <code>EXPLORING</code> a <code>ESCAPING</code> subito dopo il rilascio della bomba.
+                <strong class="block text-gray-900 dark:text-white mb-1">Piazza e Scappa</strong>
+                Dopo la bomba passa da <code>EXPLORING</code> a <code>ESCAPING</code> e inverte la direzione. La fuga è cieca: danger map + BFS sono lo sviluppo previsto.
               </li>
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
                 <strong class="block text-gray-900 dark:text-white mb-1">ScriptableObject Data</strong>
@@ -563,17 +594,17 @@
                 <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
               </span>
               <div class="inline-flex p-1 rounded-xl bg-gray-100 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-xs">
-                <button onclick="toggleMedia('p4', 'canvas')" id="btn-p4-canvas" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
-                  <i class="ph ph-play-circle mr-1"></i> Demo Canvas
+                <button onclick="toggleMedia('p4', 'gif')" id="btn-p4-gif" class="px-3 py-1 rounded-lg font-medium transition-all bg-white dark:bg-dark-card shadow-sm text-brand-600 dark:text-brand-400">
+                  <i class="ph ph-image mr-1"></i> GIF
                 </button>
                 <button onclick="toggleMedia('p4', 'video')" id="btn-p4-video" class="px-3 py-1 rounded-lg font-medium transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
-                  <i class="ph ph-youtube-logo mr-1"></i> Video Embed
+                  <i class="ph ph-youtube-logo mr-1"></i> Video completo
                 </button>
               </div>
             </div>
 
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
-              <canvas id="canvas-p4" class="w-full h-full block cursor-pointer"></canvas>
+              <img id="gif-p4" src="media/flipper.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
               <div id="video-p4" class="hidden absolute inset-0 w-full h-full">
                 <iframe class="w-full h-full" src="https://www.youtube.com/embed/MglWUY4nWWs?si=fEUe-AxLH70W33Rc" title="Video Flipper" allowfullscreen loading="lazy"></iframe>
               </div>
@@ -626,11 +657,11 @@
               <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
                 <i class="ph ph-monitor text-sm"></i> Anteprima Dimostrativa
               </span>
-              <span class="text-xs text-gray-400 font-mono">Arena Phase Grid Sim</span>
+              
             </div>
 
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
-              <canvas id="canvas-p5" class="w-full h-full block cursor-pointer"></canvas>
+              <img id="gif-p5" src="media/build-failed.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
             </div>
           </div>
 
@@ -655,9 +686,7 @@
           </div>
 
           <div class="pt-2 flex justify-end">
-            <a href="https://github.com/lorenzo2330/REPO_BUILDFAILED" target="_blank" class="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
-              Codice e README su GitHub <i class="ph ph-arrow-up-right"></i>
-            </a>
+            <span class="text-xs text-gray-400 font-mono">Repository privata · codice disponibile su richiesta</span>
           </div>
         </article>
 
@@ -669,7 +698,7 @@
       <div class="text-center space-y-2">
         <h1 class="text-3xl font-extrabold tracking-tight">Mettiamoci in contatto</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">
-          Aperto a ruoli da AI Programmer, Gameplay Programmer o Game Developer.
+          Cerco una posizione junior o uno stage in game AI e gameplay programming.
         </p>
       </div>
 
@@ -702,30 +731,6 @@
           </span>
         </a>
       </div>
-
-      <!-- Interactive Contact Form -->
-      <div class="rounded-3xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card p-6 sm:p-8 space-y-4">
-        <h2 class="text-lg font-bold">Invia un messaggio diretto</h2>
-        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Il tuo Nome</label>
-              <input type="text" required placeholder="Mario Rossi" class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Email di Contatto</label>
-              <input type="email" required placeholder="mario@example.com" class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500">
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Messaggio</label>
-            <textarea required rows="4" placeholder="Ciao Lorenzo, ho visto il tuo portfolio e vorrei parlarti di una posizione..." class="w-full px-3 py-2 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-200 dark:border-dark-border text-sm focus:outline-none focus:border-brand-500"></textarea>
-          </div>
-          <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm">
-            Invia Messaggio
-          </button>
-        </form>
-      </div>
     </section>
 
   </main>
@@ -740,9 +745,9 @@
           <span class="font-bold text-sm">Curriculum Vitae - Lorenzo D'Ambrosio</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="downloadCV()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1">
+          <a href="assets/Lorenzo_D_Ambrosio_CV.pdf" download class="px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1">
             <i class="ph ph-download-simple"></i> Download PDF
-          </button>
+          </a>
           <button onclick="closeCvModal()" class="p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500">
             <i class="ph ph-x text-lg"></i>
           </button>
@@ -755,7 +760,7 @@
         <div class="border-b border-gray-200 dark:border-dark-border pb-4 flex justify-between items-start">
           <div>
             <h1 class="text-xl font-bold text-gray-900 dark:text-white">Lorenzo D'Ambrosio</h1>
-            <p class="text-brand-600 font-medium mt-0.5">AI & Gameplay Programmer</p>
+            <p class="text-brand-600 font-medium mt-0.5">Studente Master CGD · Game AI & Gameplay</p>
           </div>
           <div class="text-right text-gray-500 space-y-0.5">
             <p>lorenzo.dambro@gmail.com</p>
@@ -855,14 +860,19 @@
       } else {
         switchTab('about');
       }
-      initCanvasSimulations();
+      syncThemeIcons();
     });
 
     /* -------- 2. DARK / LIGHT MODE SWITCH -------- */
-    function toggleDarkMode() {
-      const isDark = document.documentElement.classList.toggle('dark');
+    function syncThemeIcons() {
+      const isDark = document.documentElement.classList.contains('dark');
       document.getElementById('theme-icon-sun').classList.toggle('hidden', !isDark);
       document.getElementById('theme-icon-moon').classList.toggle('hidden', isDark);
+    }
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.theme = isDark ? 'dark' : 'light'; } catch (e) {}
+      syncThemeIcons();
     }
 
     /* -------- 3. CV MODAL & DOWNLOAD -------- */
@@ -872,28 +882,15 @@
     function closeCvModal() {
       document.getElementById('cv-modal').classList.add('hidden');
     }
-    function downloadCV() {
-      showToast("Download del CV avviato!");
-      // Generazione automatica di un file di testo simulato come CV se non presente il file statico
-      const element = document.createElement("a");
-      const file = new Blob([
-        "LORENZO D'AMBROSIO - AI & GAMEPLAY PROGRAMMER\nEmail: lorenzo.dambro@gmail.com\nGitHub: github.com/lorenzo2330\n\n- Master in Computer Game Development (Università di Verona)\n- Unreal Engine 5 (C++, State Tree, AIPerception)\n- Unity 6 (C#, Strategy Pattern)"
-      ], {type: 'text/plain'});
-      element.href = URL.createObjectURL(file);
-      element.download = "CV_Lorenzo_DAmbrosio.txt";
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    }
-
+    
     /* -------- 4. MEDIA TOGGLER (CANVAS / YOUTUBE) -------- */
     function toggleMedia(projectId, type) {
-      const canvasEl = document.getElementById(`canvas-${projectId}`);
+      const canvasEl = document.getElementById(`gif-${projectId}`);
       const videoEl = document.getElementById(`video-${projectId}`);
-      const btnCanvas = document.getElementById(`btn-${projectId}-canvas`);
+      const btnCanvas = document.getElementById(`btn-${projectId}-gif`);
       const btnVideo = document.getElementById(`btn-${projectId}-video`);
 
-      if (type === 'canvas') {
+      if (type === 'gif') {
         canvasEl.classList.remove('hidden');
         if(videoEl) videoEl.classList.add('hidden');
         btnCanvas.classList.add('bg-white', 'dark:bg-dark-card', 'shadow-sm', 'text-brand-600', 'dark:text-brand-400');
@@ -927,161 +924,6 @@
       e.target.reset();
     }
 
-    /* -------- 6. CANVAS ANIMATED AI SIMULATIONS -------- */
-    function initCanvasSimulations() {
-      // Helper setup canvas
-      function setupCanvas(id) {
-        const c = document.getElementById(id);
-        if(!c) return null;
-        c.width = c.clientWidth || 600;
-        c.height = c.clientHeight || 337;
-        return c.getContext('2d');
-      }
-
-      // --- SIMULATION 1: State Tree Vision AI ---
-      const ctx1 = setupCanvas('canvas-p1');
-      if(ctx1) {
-        let player = { x: 100, y: 200, dx: 2 };
-        let boss = { x: 450, y: 200, state: 'SEARCH' };
-        
-        function anim1() {
-          ctx1.fillStyle = '#09090b';
-          ctx1.fillRect(0, 0, ctx1.canvas.width, ctx1.canvas.height);
-
-          // Grid line
-          ctx1.strokeStyle = '#27272a';
-          ctx1.beginPath(); ctx1.moveTo(0, 240); ctx1.lineTo(600, 240); ctx1.stroke();
-
-          // Player
-          player.x += player.dx;
-          if(player.x > 300 || player.x < 50) player.dx *= -1;
-          ctx1.fillStyle = '#60a5fa';
-          ctx1.fillRect(player.x, player.y - 20, 20, 20);
-
-          // Boss Perception Cone
-          ctx1.fillStyle = boss.state === 'ATTACK' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.15)';
-          ctx1.beginPath();
-          ctx1.moveTo(boss.x, boss.y - 10);
-          ctx1.lineTo(boss.x - 180, boss.y - 60);
-          ctx1.lineTo(boss.x - 180, boss.y + 40);
-          ctx1.closePath();
-          ctx1.fill();
-
-          // Boss
-          ctx1.fillStyle = '#ef4444';
-          ctx1.fillRect(boss.x, boss.y - 30, 30, 30);
-
-          // Check Vision
-          let dist = Math.abs((boss.x - 90) - player.x);
-          boss.state = dist < 180 ? 'ATTACK' : 'INVESTIGATE';
-
-          // HUD State Tree Info
-          ctx1.fillStyle = '#ffffff';
-          ctx1.font = '12px JetBrains Mono';
-          ctx1.fillText(`STATE TREE: [ST_Boss]`, 20, 30);
-          ctx1.fillText(`CURRENT STATE: ${boss.state}`, 20, 50);
-          ctx1.fillText(`PERCEPTION: AIPerception_Sight`, 20, 70);
-
-          requestAnimationFrame(anim1);
-        }
-        anim1();
-      }
-
-      // --- SIMULATION 2: Arkanoid Trajectory Predictor ---
-      const ctx2 = setupCanvas('canvas-p2');
-      if(ctx2) {
-        let ball = { x: 150, y: 100, vx: 4, vy: 5 };
-        let paddleX = 150;
-
-        function anim2() {
-          ctx2.fillStyle = '#09090b';
-          ctx2.fillRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
-
-          // Update Ball
-          ball.x += ball.vx; ball.y += ball.vy;
-          if(ball.x < 10 || ball.x > ctx2.canvas.width - 10) ball.vx *= -1;
-          if(ball.y < 10) ball.vy *= -1;
-          if(ball.y > 280) ball.vy *= -1;
-
-          // Trajectory Prediction Ray
-          ctx2.strokeStyle = '#22c55e';
-          ctx2.setLineDash([4, 4]);
-          ctx2.beginPath();
-          ctx2.moveTo(ball.x, ball.y);
-          let targetX = ball.x + (ball.vx * ((280 - ball.y) / ball.vy));
-          ctx2.lineTo(targetX, 280);
-          ctx2.stroke();
-          ctx2.setLineDash([]);
-
-          // Smooth Paddle Follow
-          paddleX += (targetX - paddleX - 30) * 0.1;
-
-          // Paddle
-          ctx2.fillStyle = '#3b82f6';
-          ctx2.fillRect(paddleX, 280, 60, 10);
-
-          // Ball
-          ctx2.fillStyle = '#f59e0b';
-          ctx2.beginPath(); ctx2.arc(ball.x, ball.y, 6, 0, Math.PI*2); ctx2.fill();
-
-          // HUD Predictor
-          ctx2.fillStyle = '#22c55e';
-          ctx2.font = '11px JetBrains Mono';
-          ctx2.fillText(`PREDICTOR: Target Hit X = ${Math.round(targetX)}px`, 20, 30);
-
-          requestAnimationFrame(anim2);
-        }
-        anim2();
-      }
-
-      // --- SIMULATION 3: PaoPao Strategy Pattern Grid ---
-      const ctx3 = setupCanvas('canvas-p3');
-      if(ctx3) {
-        function anim3() {
-          ctx3.fillStyle = '#09090b';
-          ctx3.fillRect(0, 0, ctx3.canvas.width, ctx3.canvas.height);
-
-          // Grid
-          ctx3.strokeStyle = '#1c1c21';
-          for(let i=0; i<600; i+=40) {
-            ctx3.beginPath(); ctx3.moveTo(i, 0); ctx3.lineTo(i, 337); ctx3.stroke();
-          }
-
-          ctx3.fillStyle = '#a855f7';
-          ctx3.fillText("STRATEGY: EscapeAndSurvive Strategy", 20, 30);
-          ctx3.fillText("STATE: ESCAPING (Danger Grid Active)", 20, 50);
-
-          requestAnimationFrame(anim3);
-        }
-        anim3();
-      }
-
-      // --- SIMULATION 4: Flipper Trigger ---
-      const ctx4 = setupCanvas('canvas-p4');
-      if(ctx4) {
-        function anim4() {
-          ctx4.fillStyle = '#09090b';
-          ctx4.fillRect(0, 0, ctx4.canvas.width, ctx4.canvas.height);
-          ctx4.fillStyle = '#3b82f6';
-          ctx4.fillText("PHYSICS TRIGGER AI SIMULATION", 20, 30);
-          requestAnimationFrame(anim4);
-        }
-        anim4();
-      }
-
-      // --- SIMULATION 5: BuildFailed Grid ---
-      const ctx5 = setupCanvas('canvas-p5');
-      if(ctx5) {
-        function anim5() {
-          ctx5.fillStyle = '#09090b';
-          ctx5.fillRect(0, 0, ctx5.canvas.width, ctx5.canvas.height);
-          ctx5.fillStyle = '#ef4444';
-          ctx5.fillText("MERGE ROOM ARENA GRID - BOSS PHASE 2", 20, 30);
-          requestAnimationFrame(anim5);
-        }
-        anim5();
-      }
-    }
   </script>
 </body>
 </html>
