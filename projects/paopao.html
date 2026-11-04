@@ -31,7 +31,7 @@
           </div>
 
           <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-            Progetto mobile multiplayer online sviluppato in team di 3. Contributo personale incentrato su Gameplay Programming, sistema audio FMOD e architettura Bot AI tramite Strategy Pattern.
+            Progetto mobile multiplayer online sviluppato in team di 3. Contributo personale incentrato su Gameplay Programming, sistema audio FMOD e AI dei bot: strategie intercambiabili che evitano le bombe e perseguono obiettivi diversi.
           </p>
 
           <div class="space-y-3">
@@ -52,7 +52,7 @@
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-black">
               <img id="gif-p3" src="../media/paopao.gif" alt="Anteprima del progetto" loading="lazy" class="w-full h-full object-contain" onerror="this.classList.add('opacity-0');this.parentElement.classList.add('gif-missing')">
               <div id="video-p3" class="hidden absolute inset-0 w-full h-full">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/vvPt_-8rNBo?si=DgUPOOCGHYQMM-dx" title="Video PaoPao" allowfullscreen loading="lazy"></iframe>
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/vY9ex_s5akA?si=OTULZxTZQbOoFysz" title="Video PaoPao" allowfullscreen loading="lazy"></iframe>
               </div>
             </div>
           </div>
@@ -63,18 +63,80 @@
             </h3>
             <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600 dark:text-gray-300">
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
-                <strong class="block text-gray-900 dark:text-white mb-1">Strategy Pattern</strong>
-                Strategia scelta dal livello di difficoltà: una nuova difficoltà è una nuova classe, senza toccare l'handler di input.
+                <strong class="block text-gray-900 dark:text-white mb-1">Strategie intercambiabili</strong>
+                Strategy Pattern con una classe base comune (<code>BotCommonStrategy</code>): una nuova strategia implementa solo cosa fare, il loop di fuga e piazzamento è condiviso. Si cambia strategia da un enum in <code>BotInputHandler</code>.
               </li>
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
-                <strong class="block text-gray-900 dark:text-white mb-1">Piazza e Scappa</strong>
-                Dopo la bomba passa da <code>EXPLORING</code> a <code>ESCAPING</code> e inverte la direzione. La fuga è cieca: danger map + BFS sono lo sviluppo previsto.
+                <strong class="block text-gray-900 dark:text-white mb-1">Evitare le bombe, sempre</strong>
+                Ogni mossa è validata: una cella è sicura solo se bombe e fiamme non la colpiscono prima dell'arrivo del bot. La fuga è una BFS verso la cella sicura più vicina; la bomba si piazza solo se esiste una via di fuga.
               </li>
               <li class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border">
-                <strong class="block text-gray-900 dark:text-white mb-1">ScriptableObject Data</strong>
-                Parametri di reattività, cooldown e frequenza bombe isolati in asset <code>BotInstanceData</code>.
+                <strong class="block text-gray-900 dark:text-white mb-1">Quattro comportamenti</strong>
+                <code>Random</code>, <code>Explorer</code> (apre la mappa distruggendo i breakable), <code>Kamikaze</code> (insegue il giocatore più vicino) e <code>Pacifist</code> (aspetta il 1vs1, poi diventa Kamikaze).
               </li>
             </ul>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold flex items-center gap-2">
+              <i class="ph ph-tree-structure text-brand-600"></i> Strategie dei Bot
+            </h3>
+
+            <div class="flex flex-col items-center gap-1 text-xs">
+              <div class="px-4 py-2 rounded-xl border border-brand-500/40 bg-gray-50 dark:bg-dark-bg text-center">
+                <code class="font-semibold text-gray-900 dark:text-white">BotInputHandler</code>
+                <span class="block text-gray-500 dark:text-gray-400">sceglie la strategia dall'enum e la esegue come un normale input</span>
+              </div>
+              <i class="ph ph-arrow-down text-brand-600"></i>
+              <p class="px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 font-semibold text-center">
+                Priorità comune a tutte: restare vivi (evitare bombe e fiamme)
+              </p>
+              <i class="ph ph-arrow-down text-brand-600"></i>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-gray-600 dark:text-gray-300">
+              <div class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border space-y-2">
+                <div class="flex items-center gap-2"><i class="ph ph-shuffle text-brand-600 text-base"></i><strong class="text-gray-900 dark:text-white">Random</strong></div>
+                <dl class="space-y-1.5">
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Obiettivo</dt><dd>Solo sopravvivere</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Movimento</dt><dd>Direzione casuale tra le celle sicure</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Bomba</dt><dd>Appena possibile</dd></div>
+                </dl>
+              </div>
+
+              <div class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border space-y-2">
+                <div class="flex items-center gap-2"><i class="ph ph-compass text-brand-600 text-base"></i><strong class="text-gray-900 dark:text-white">Explorer</strong></div>
+                <dl class="space-y-1.5">
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Obiettivo</dt><dd>Aprire la mappa distruggendo i breakable</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Movimento</dt><dd>BFS verso la cella più vicina accanto a un breakable</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Bomba</dt><dd>Quando ha un breakable adiacente</dd></div>
+                </dl>
+                <p class="pt-2 border-t border-gray-200 dark:border-dark-border/50 flex flex-wrap items-center gap-1.5 text-brand-600 dark:text-brand-400 font-semibold">
+                  <span>nessun breakable rimasto</span><i class="ph ph-arrow-right"></i><span>Kamikaze</span>
+                </p>
+              </div>
+
+              <div class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border space-y-2">
+                <div class="flex items-center gap-2"><i class="ph ph-peace text-brand-600 text-base"></i><strong class="text-gray-900 dark:text-white">Pacifist</strong></div>
+                <dl class="space-y-1.5">
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Obiettivo</dt><dd>Sopravvivere finché non resta il 1vs1</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Movimento</dt><dd>Fermo se la cella è sicura, altrimenti va alla cella sicura più vicina</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Bomba</dt><dd>Mai, fino al 1vs1</dd></div>
+                </dl>
+                <p class="pt-2 border-t border-gray-200 dark:border-dark-border/50 flex flex-wrap items-center gap-1.5 text-brand-600 dark:text-brand-400 font-semibold">
+                  <span>1vs1</span><i class="ph ph-arrow-right"></i><span>Kamikaze</span>
+                </p>
+              </div>
+
+              <div class="p-3 rounded-xl bg-gray-50 dark:bg-dark-bg border border-gray-100 dark:border-dark-border space-y-2">
+                <div class="flex items-center gap-2"><i class="ph ph-skull text-brand-600 text-base"></i><strong class="text-gray-900 dark:text-white">Kamikaze</strong></div>
+                <dl class="space-y-1.5">
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Obiettivo</dt><dd>Raggiungere il giocatore più vicino</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Movimento</dt><dd>BFS verso il giocatore; se un breakable blocca il percorso, va a romperlo</dd></div>
+                  <div><dt class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Bomba</dt><dd>Quando è accanto al giocatore (o al breakable che blocca la strada)</dd></div>
+                </dl>
+              </div>
+            </div>
           </div>
 
           <details class="group border border-gray-200 dark:border-dark-border rounded-2xl bg-gray-50 dark:bg-dark-bg overflow-hidden">
@@ -83,7 +145,24 @@
               <i class="ph ph-caret-down text-base transition-transform group-open:rotate-180"></i>
             </summary>
             <div class="p-4 pt-0 border-t border-gray-200 dark:border-dark-border/50 text-xs space-y-3 text-gray-600 dark:text-gray-300">
-              <p><strong>Pipeline Input:</strong> <code>BotContext</code> → <code>IBotStrategy</code> (DecideMovement, DecideBomb) → <code>BotInputHandler</code> che implementa l'interfaccia <code>IPlayerInput</code> (rendendo il bot indistinguibile da un giocatore umano per il controller del personaggio).</p>
+              <p><strong>Pipeline Input:</strong> <code>BotInputHandler</code> implementa <code>IPlayerInput</code>, quindi il bot è indistinguibile da un giocatore umano per il controller del personaggio. L'handler crea la strategia scelta (enum <code>BotStrategyType</code>) e a ogni nuova cella chiama <code>IBotStrategy</code>: <code>Think</code>, <code>DecideMove</code>, <code>DecideBomb</code>, più <code>UpdateTimers</code> a ogni frame. Le informazioni condivise stanno in <code>BotContext</code>; le funzioni comuni (BFS, controlli di sicurezza, ricerca di giocatori e breakable) in <code>BotToolkit</code>.</p>
+
+              <p><strong>Ciclo decisionale (<code>BotCommonStrategy</code>):</strong></p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>Stato <code>Exploring</code> / <code>Escaping</code>: in fuga il bot prosegue verso la cella sicura più vicina (BFS), mantenendo una direzione preferita per non cambiare idea a metà percorso.</li>
+                <li>In <code>Exploring</code> la strategia decide se vuole una bomba (<code>WantsBomb</code>). Prima di piazzarla il bot simula il piazzamento e verifica con la BFS che esista una cella sicura raggiungibile; altrimenti rinuncia.</li>
+                <li>Ogni mossa proposta (<code>ChooseMove</code>) è controllata: se la cella di destinazione non è sicura, la priorità passa alla ricerca della cella sicura più vicina.</li>
+              </ul>
+
+              <p><strong>Percezione del pericolo:</strong> una cella è pericolosa se una bomba la raggiunge (raggio, bloccato da muri e breakable) o se ci sono fiamme attive, confrontando il timer della miccia con il tempo di arrivo stimato (passi × tempo di attraversamento). Il controllo include anche la bomba che il bot sta per piazzare. Il pericolo è valutato su richiesta per cella, non precalcolato in una mappa. Funziona anche in stanza Photon, leggendo bombe e fiamme online.</p>
+
+              <p><strong>Dettagli delle strategie:</strong> dopo aver piazzato una bomba, Kamikaze e Pacifist (in 1vs1) fuggono preferendo la direzione opposta al giocatore più vicino. Il bersaglio è scelto per distanza in linea d'aria; il percorso, invece, è calcolato con la BFS sulla griglia.</p>
+
+              <p><strong>Mappe:</strong> sono presenti 3 mappe, realizzate da un collega del team.</p>
+              <p><strong>Multiplayer:</strong> è possibile giocare online tramite Photon, parte realizzata da un collega del team.</p>
+
+              <p><strong>Limiti noti:</strong> il bersaglio è il giocatore più vicino in linea d'aria e i bot non si coordinano tra loro; il controllo di sicurezza è ricalcolato a ogni ricerca, quindi con molti bot servirebbe una cache.</p>
+              <p><strong>Sviluppi previsti:</strong> una vera danger map (celle pericolose con timer, calcolata una volta e condivisa tra i bot, al posto del ricalcolo a ogni ricerca) e un Behaviour Tree per comporre le strategie, così che priorità e transizioni tra comportamenti (per esempio Explorer che passa a Kamikaze) siano nodi dell'albero e non codice dentro ogni classe.</p>
             </div>
           </details>
 
